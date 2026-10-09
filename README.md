@@ -1,80 +1,56 @@
-# Sweeps Intelligence — Site Automation Recon
+# Sweeps Intelligence
 
-Technical intelligence report covering **102 sweepstakes casino sites** (95 active, 7 dead), built from the client's master spreadsheet.
+Technical recon of the Casino Masterlist: 102 sites surveyed, 95 active, 7 closed.
+Prepared by Santiago.
 
-## What's Inside
+## Deploy
 
-### `site/index.html` — Interactive Dashboard
-Open in any browser. Contains:
-- **Platform Family Map** — 13 parent companies running 41 sites. One adapter per family = 28 fewer adapters to build and maintain.
-- **Mechanism Taxonomy** — Every bonus type classified (Click, Wheel, Streak, Timed, Multi-step, Purchase-locked, VIP-locked) with adapter implementation hints.
-- **Architecture Blueprint** — SVG diagram: Scheduler → Orchestrator → Anti-Detection → Browser Pool → Adapter Layer → Data Layer.
-- **Site Health Matrix** — 85 healthy / 10 risky / 7 dead, with risk reasons.
-- **Revenue Projections** — $90.84/day expected ($2,725/month) across all active sites, broken down by tier.
-- **Full Site Directory** — Searchable, filterable, sortable table of all 95 active sites with tier, mechanism, parent, difficulty score, and daily SC range.
+`site/index.html` is one self-contained file. Put it at the root of any static host
+(Vercel, Netlify, GitHub Pages). No build step. Fonts load from Google Fonts and fall back
+to system fonts if blocked.
 
-### `site/files/adapter_interface.py` — Adapter Pattern
-Production-ready Python: abstract `SiteAdapter` base class + concrete `B2Adapter` covering 6 sites. Shows the exact contract every platform adapter implements (login → claim_daily → check_balance → is_healthy → cleanup).
+## What the page contains (one tab each)
 
-### `site/files/config.example.json` — Config Format
-Full bot configuration: scheduler timing, anti-detection settings (fingerprint rotation, residential proxies, human-like delays), encrypted credential vault, monitoring/alerting (Telegram + Discord), and 4 example site definitions showing how sites map to adapters.
+| Tab | What it shows |
+|---|---|
+| Overview | The daily flow in four steps, key findings, expected daily yield by tier |
+| Platform map | 13 parent companies running 41 sites, one adapter each, as a unit chart and a table |
+| Claim types | The seven ways a site hands out its daily bonus, with bot behaviour for each |
+| Architecture | Seven-stage diagram, one claim step by step, and the outcome table (what the bot does on each failure) |
+| Site directory | All 95 active sites, searchable, filterable by tier, sortable |
+| Risk and payout | Site health, difficulty distribution, days to first payout, what the analysis cannot see |
+| Build plan | Two phases, week-1 checks, and the adapter and config code |
 
-### `src/data.py` — Site Database
-All 102 sites with: name, tier (GOD/HIGH/MED/TRASH/DEAD), parent company, mechanism type, daily SC range, minimum redemption, restricted states, operational notes.
+Every section pairs an "In plain English" block with a "Technical" block.
 
-### `src/analyze.py` — Analysis Engine
-Platform family grouping, mechanism taxonomy, difficulty scoring (1-5 scale), revenue projections, and site health classification.
-
-## Key Numbers
+## Key numbers
 
 | Metric | Value |
-|--------|-------|
+|---|---|
 | Active sites | 95 |
-| Dead sites | 7 |
-| Platform families (multi-site) | 13 |
-| Unique adapters needed | 67 |
-| Adapters saved by family grouping | 28 |
-| Expected daily SC | $90.84 |
-| Expected monthly SC | $2,725.20 |
+| Adapters needed | 67 (28 saved by grouping 41 sites into 13 families) |
+| Expected yield | $58.74 per day, about $1,762 per month (floor $30.90, ceiling $123.70) |
+| Median time to first payout | 227 days |
 
-## Architecture
+Yield method: 70% of each site's minimum plus 30% of its maximum. Each maximum is capped at
+$5.00 per site per day, because 8 sites list larger figures that come from purchase packs or
+jackpot-wheel prizes rather than the standard daily claim.
 
-```
-                    ┌─────────────┐
-                    │  Scheduler   │  cron daily + interval (Fliff 2h, Jefebet 6h)
-                    └──────┬──────┘
-                           │
-                    ┌──────▼──────┐
-                    │ Orchestrator │  iterates sites, manages retries
-                    └──────┬──────┘
-                           │
-              ┌────────────┼────────────┐
-              │            │            │
-       ┌──────▼──────┐ ┌──▼───┐ ┌──────▼──────┐
-       │Anti-Detection│ │Proxy │ │  Credential  │
-       │  fingerprint │ │resi  │ │    Vault     │
-       │  + delays    │ │sticky│ │  (encrypted) │
-       └──────┬──────┘ └──┬───┘ └──────┬──────┘
-              └────────────┼────────────┘
-                           │
-                    ┌──────▼──────┐
-                    │ Browser Pool │  Playwright, 1 context per site
-                    └──────┬──────┘
-                           │
-        ┌──────────────────┼──────────────────┐
-        │                  │                  │
-  ┌─────▼─────┐     ┌─────▼─────┐     ┌─────▼─────┐
-  │ B2Adapter  │     │VGWAdapter │     │FliffAdapter│  ...67 total
-  │ (6 sites)  │     │ (4 sites) │     │ (1 site)  │
-  └────────────┘     └───────────┘     └───────────┘
-```
+## Files
 
-## Running the Analysis
+- `site/index.html` the dashboard
+- `site/files/adapter_interface.py` base adapter class and a full B2 example
+- `site/files/config.example.json` scheduler, anti-detection, vault, alerts and sample sites
+- `src/data.py` all 102 sites from the masterlist
+- `src/analyze.py` families, claim types, difficulty, yield and health
+- `src/render.py` generates the dashboard
+- `data/analysis.json` analysis output
+
+## Regenerate
 
 ```bash
 cd src
-python3 render.py       # generates site/index.html + data/analysis.json
-python3 analyze.py      # standalone analysis to data/analysis.json
+python3 render.py   # writes site/index.html and data/analysis.json
 ```
 
-Requires Python 3.8+, no external dependencies.
+Python 3.8 or newer, no external dependencies.

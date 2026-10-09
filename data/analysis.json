@@ -113,7 +113,7 @@
         "medium"
       ],
       "daily_min": 0.5,
-      "daily_max": 60.2,
+      "daily_max": 15.2,
       "adapters_saved": 3
     },
     {
@@ -133,7 +133,7 @@
         "medium"
       ],
       "daily_min": 0.65,
-      "daily_max": 10.4,
+      "daily_max": 5.4,
       "adapters_saved": 2
     },
     {
@@ -222,7 +222,7 @@
         "high"
       ],
       "daily_min": 2.0,
-      "daily_max": 8.2,
+      "daily_max": 7.2,
       "adapters_saved": 1
     },
     {
@@ -240,7 +240,7 @@
         "trash"
       ],
       "daily_min": 0.1,
-      "daily_max": 16.0,
+      "daily_max": 6.0,
       "adapters_saved": 1
     },
     {
@@ -529,7 +529,7 @@
         "high"
       ],
       "daily_min": 1.0,
-      "daily_max": 6.0,
+      "daily_max": 5.0,
       "adapters_saved": 0
     },
     {
@@ -1105,7 +1105,7 @@
         "trash"
       ],
       "daily_min": 1.0,
-      "daily_max": 50.0,
+      "daily_max": 5.0,
       "adapters_saved": 0
     }
   ],
@@ -1251,9 +1251,20 @@
   "revenue": {
     "active_sites": 95,
     "daily_min": 30.9,
-    "daily_max": 230.7,
-    "daily_expected": 90.84,
-    "monthly_expected": 2725.2,
+    "daily_max": 123.7,
+    "daily_expected": 58.74,
+    "monthly_expected": 1762.2,
+    "daily_cap": 5.0,
+    "capped_sites": [
+      "Sidepot",
+      "RichSweeps",
+      "ScarletSands",
+      "MoonSpin",
+      "SpeedSweeps",
+      "DimeSweeps",
+      "GoldSlips",
+      "Vivaro.us"
+    ],
     "by_tier": {
       "god": {
         "count": 28,
@@ -1261,15 +1272,15 @@
       },
       "high": {
         "count": 17,
-        "daily_expected": 29.0
+        "daily_expected": 17.91
       },
       "medium": {
         "count": 41,
-        "daily_expected": 20.19
+        "daily_expected": 15.69
       },
       "trash": {
         "count": 9,
-        "daily_expected": 22.07
+        "daily_expected": 5.57
       }
     }
   },
@@ -1457,7 +1468,7 @@
       "mechanism": "wheel",
       "difficulty": 4.5,
       "daily_min": 0.0,
-      "daily_max": 15.0
+      "daily_max": 5.0
     },
     {
       "name": "WOW Vegas",
@@ -1520,7 +1531,7 @@
       "mechanism": "wheel",
       "difficulty": 4.0,
       "daily_min": 0.1,
-      "daily_max": 20.0
+      "daily_max": 5.0
     },
     {
       "name": "Jefebet",
@@ -1592,7 +1603,7 @@
       "mechanism": "wheel",
       "difficulty": 3.5,
       "daily_min": 0.1,
-      "daily_max": 20.0
+      "daily_max": 5.0
     },
     {
       "name": "SpeedSweeps",
@@ -1601,7 +1612,7 @@
       "mechanism": "wheel",
       "difficulty": 3.5,
       "daily_min": 0.1,
-      "daily_max": 20.0
+      "daily_max": 5.0
     },
     {
       "name": "TaoFortune",
@@ -1664,7 +1675,7 @@
       "mechanism": "click",
       "difficulty": 3.0,
       "daily_min": 1.0,
-      "daily_max": 6.0
+      "daily_max": 5.0
     },
     {
       "name": "Shuffle.us",
@@ -1682,7 +1693,7 @@
       "mechanism": "streak",
       "difficulty": 3.0,
       "daily_min": 0.25,
-      "daily_max": 10.0
+      "daily_max": 5.0
     },
     {
       "name": "SweepNext",
@@ -1808,7 +1819,7 @@
       "mechanism": "click",
       "difficulty": 3.0,
       "daily_min": 1.0,
-      "daily_max": 50.0
+      "daily_max": 5.0
     },
     {
       "name": "Crown Coins",
@@ -2141,7 +2152,7 @@
       "mechanism": "click",
       "difficulty": 2.0,
       "daily_min": 1.0,
-      "daily_max": 6.0
+      "daily_max": 5.0
     },
     {
       "name": "GetZoot",

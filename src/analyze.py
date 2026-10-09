@@ -9,6 +9,25 @@ from data import SITES, CLICK, WHEEL, STREAK, TIMED, MULTI, LOCKED, VIP, MOBILE,
 from data import GOD, HIGH, MED, TRASH, DEAD
 
 
+# The spreadsheet's "max" column sometimes holds purchase-pack bonuses
+# (e.g. "$9.99/30SC, $24.99/50SC") or jackpot-wheel prizes, not the free daily
+# claim. Cap each site's max so those outliers cannot inflate the estimate.
+DAILY_CAP = 5.0
+
+
+def eff_max(s):
+    return min(s["daily_max"], DAILY_CAP)
+
+
+def expected_daily(s):
+    """Expected SC/day: 70% weight on the low end, 30% on the (capped) high end."""
+    return s["daily_min"] * 0.7 + eff_max(s) * 0.3
+
+
+def capped_sites():
+    return [s["name"] for s in SITES if s["tier"] != DEAD and s["daily_max"] > DAILY_CAP]
+
+
 def platform_families():
     """Group sites by parent company. Sites sharing a parent share an adapter."""
     families = defaultdict(list)
@@ -30,7 +49,7 @@ def family_stats(families):
         mechanisms = set(s["mechanism"] for s in active)
         tiers = set(s["tier"] for s in active)
         daily_total_min = sum(s["daily_min"] for s in active)
-        daily_total_max = sum(s["daily_max"] for s in active)
+        daily_total_max = sum(eff_max(s) for s in active)
         stats.append({
             "parent": parent,
             "sites": [s["name"] for s in active],
@@ -101,24 +120,22 @@ def revenue_projection():
     """Compute daily/monthly revenue from all active sites."""
     active = [s for s in SITES if s["tier"] not in (DEAD,)]
     daily_min = sum(s["daily_min"] for s in active)
-    daily_max = sum(s["daily_max"] for s in active)
+    daily_max = sum(eff_max(s) for s in active)
     # Realistic estimate: most wheels land near the low end
-    daily_expected = sum(
-        s["daily_min"] * 0.7 + s["daily_max"] * 0.3
-        for s in active
-    )
+    daily_expected = sum(expected_daily(s) for s in active)
     return {
         "active_sites": len(active),
         "daily_min": round(daily_min, 2),
         "daily_max": round(daily_max, 2),
         "daily_expected": round(daily_expected, 2),
         "monthly_expected": round(daily_expected * 30, 2),
+        "daily_cap": DAILY_CAP,
+        "capped_sites": capped_sites(),
         "by_tier": {
             tier: {
                 "count": len([s for s in active if s["tier"] == tier]),
                 "daily_expected": round(sum(
-                    s["daily_min"] * 0.7 + s["daily_max"] * 0.3
-                    for s in active if s["tier"] == tier
+                    expected_daily(s) for s in active if s["tier"] == tier
                 ), 2),
             }
             for tier in (GOD, HIGH, MED, TRASH)
@@ -176,7 +193,7 @@ def run_analysis():
             "mechanism": s["mechanism"],
             "difficulty": difficulty_score(s),
             "daily_min": s["daily_min"],
-            "daily_max": s["daily_max"],
+            "daily_max": eff_max(s),
         })
     difficulties.sort(key=lambda x: -x["difficulty"])
 
