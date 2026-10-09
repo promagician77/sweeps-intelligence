@@ -1,0 +1,2273 @@
+{
+  "summary": {
+    "total_sites": 102,
+    "active_sites": 95,
+    "dead_sites": 7,
+    "unique_adapters": 67,
+    "adapters_saved": 28,
+    "multi_site_families": 13,
+    "sites_in_families": 41
+  },
+  "families": [
+    {
+      "parent": "B2",
+      "sites": [
+        "McLuck",
+        "Playfame",
+        "Hello Millions",
+        "Jackpota",
+        "SpinBlitz",
+        "MegaBonanza"
+      ],
+      "count": 6,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god",
+        "medium"
+      ],
+      "daily_min": 1.6,
+      "daily_max": 3.6,
+      "adapters_saved": 5
+    },
+    {
+      "parent": "A1",
+      "sites": [
+        "NoLimitCoins",
+        "FortuneWheelz",
+        "FunzCity",
+        "TaoFortune",
+        "FunRize"
+      ],
+      "count": 5,
+      "mechanisms": [
+        "click",
+        "streak",
+        "wheel"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.6,
+      "daily_max": 1.9,
+      "adapters_saved": 4
+    },
+    {
+      "parent": "VGW",
+      "sites": [
+        "LuckyLandSlots",
+        "LuckyLandCasino",
+        "Chumba Casino",
+        "Global Poker"
+      ],
+      "count": 4,
+      "mechanisms": [
+        "click",
+        "multi_step",
+        "streak"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 7.2,
+      "adapters_saved": 3
+    },
+    {
+      "parent": "Blazesoft",
+      "sites": [
+        "Sportzino",
+        "Zula",
+        "YayCasino",
+        "Fortune Coins"
+      ],
+      "count": 4,
+      "mechanisms": [
+        "click",
+        "multi_step"
+      ],
+      "tiers": [
+        "god",
+        "medium"
+      ],
+      "daily_min": 3.75,
+      "daily_max": 4.75,
+      "adapters_saved": 3
+    },
+    {
+      "parent": "WW Funcrafters JWA LLC",
+      "sites": [
+        "RichSweeps",
+        "SweepsRoyal",
+        "SpeedSweeps",
+        "DimeSweeps"
+      ],
+      "count": 4,
+      "mechanisms": [
+        "click",
+        "wheel"
+      ],
+      "tiers": [
+        "high",
+        "medium"
+      ],
+      "daily_min": 0.5,
+      "daily_max": 60.2,
+      "adapters_saved": 3
+    },
+    {
+      "parent": "UTech Solutions",
+      "sites": [
+        "ScarletSands",
+        "Sweepshark",
+        "JackpotRabbit"
+      ],
+      "count": 3,
+      "mechanisms": [
+        "click",
+        "streak"
+      ],
+      "tiers": [
+        "high",
+        "medium"
+      ],
+      "daily_min": 0.65,
+      "daily_max": 10.4,
+      "adapters_saved": 2
+    },
+    {
+      "parent": "SWPMTECH LTD",
+      "sites": [
+        "JuicyPopSlots",
+        "LuckyStars",
+        "GummyPlay"
+      ],
+      "count": 3,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "trash"
+      ],
+      "daily_min": 0.6,
+      "daily_max": 0.6,
+      "adapters_saved": 2
+    },
+    {
+      "parent": "MW Services",
+      "sites": [
+        "WOW Vegas",
+        "Rolla"
+      ],
+      "count": 2,
+      "mechanisms": [
+        "click",
+        "purchase_locked"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.3,
+      "daily_max": 1.1,
+      "adapters_saved": 1
+    },
+    {
+      "parent": "RealPlay Tech Inc",
+      "sites": [
+        "Real Prize",
+        "Lonestar"
+      ],
+      "count": 2,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.6,
+      "daily_max": 1.6,
+      "adapters_saved": 1
+    },
+    {
+      "parent": "Yellow Social",
+      "sites": [
+        "Pulsz",
+        "PulszBingo"
+      ],
+      "count": 2,
+      "mechanisms": [
+        "click",
+        "wheel"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.5,
+      "daily_max": 1.3,
+      "adapters_saved": 1
+    },
+    {
+      "parent": "Fliff",
+      "sites": [
+        "Sidepot",
+        "Fliff"
+      ],
+      "count": 2,
+      "mechanisms": [
+        "click",
+        "timed"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 2.0,
+      "daily_max": 8.2,
+      "adapters_saved": 1
+    },
+    {
+      "parent": "Rubystone Ventures LLC",
+      "sites": [
+        "RubySweeps",
+        "GoldSlips"
+      ],
+      "count": 2,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "high",
+        "trash"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 16.0,
+      "adapters_saved": 1
+    },
+    {
+      "parent": "Munyon Canyon",
+      "sites": [
+        "Shuffle.us",
+        "American Luck"
+      ],
+      "count": 2,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.4,
+      "daily_max": 1.9,
+      "adapters_saved": 1
+    },
+    {
+      "parent": "Sunflower Limited",
+      "sites": [
+        "Crown Coins"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.05,
+      "daily_max": 1.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Platinum Panther LTD",
+      "sites": [
+        "Legendz"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 1.5,
+      "daily_max": 1.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Miracle Studio Inc",
+      "sites": [
+        "GoldTreasureCasino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.5,
+      "daily_max": 1.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "My Technology Inc",
+      "sites": [
+        "MyPrize"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 2.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Moshy Gaming",
+      "sites": [
+        "Moozi"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.3,
+      "daily_max": 0.3,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "LBV Social LLC",
+      "sites": [
+        "LuckyBitsVegas"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "SpinSaga Inc",
+      "sites": [
+        "SpinSaga"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Sweepsteaks Limited",
+      "sites": [
+        "Stake"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Casino Click",
+      "sites": [
+        "Casino.Click"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.0,
+      "daily_max": 5.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Stackr Social LLC",
+      "sites": [
+        "Stackr"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 2.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "SpinPals LLC",
+      "sites": [
+        "SpinPals"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "god"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Kinetix Ventures LLC",
+      "sites": [
+        "Sixty6"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 5.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Vision NL Limited",
+      "sites": [
+        "Card Crush"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Golden Hearts",
+      "sites": [
+        "Golden Hearts Games"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Boostora LTD",
+      "sites": [
+        "SweepNext"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "multi_step"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Rebet Inc",
+      "sites": [
+        "ReBet"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "multi_step"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Star Pulse Limited",
+      "sites": [
+        "MoonSpin"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 6.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "ToraTora Entertainment Inc",
+      "sites": [
+        "ToraTora"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 5.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "PMSG Media Limited",
+      "sites": [
+        "SpinDoo"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "high"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 2.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Rubystone Play LLC",
+      "sites": [
+        "PeakPlay"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "FSG Digital",
+      "sites": [
+        "Jefebet"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "timed"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.8,
+      "daily_max": 1.4,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Rolling Riches",
+      "sites": [
+        "Rolling Riches"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "timed"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.8,
+      "daily_max": 1.4,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "KHK Games Inc",
+      "sites": [
+        "Clubs Poker"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "multi_step"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.5,
+      "daily_max": 0.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "High 5",
+      "sites": [
+        "High5Casino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.5,
+      "daily_max": 0.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "ARB Gaming",
+      "sites": [
+        "Modo"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.4,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Play Spree",
+      "sites": [
+        "Spree"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.4,
+      "daily_max": 0.4,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Parana Plays LLC",
+      "sites": [
+        "LunaLandCasino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Enigma Lake Inc",
+      "sites": [
+        "GetZoot"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "ElevateTech Solutions Inc",
+      "sites": [
+        "LuckyStake"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 2.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Full Stop Limited Inc",
+      "sites": [
+        "Ace.com"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.4,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Chipnwin LLC",
+      "sites": [
+        "ChipNWin"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.5,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Heuston Gaming Inc",
+      "sites": [
+        "MegaFrenzy"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "multi_step"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.4,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Gold Coin Group",
+      "sites": [
+        "Chanced.com"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.0,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Social Gaming Room LLC",
+      "sites": [
+        "SpinQuest"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 1.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Jupiter Studio Limited",
+      "sites": [
+        "AcornFun"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.3,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Baba Entertainment LTD",
+      "sites": [
+        "Baba Casino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.25,
+      "daily_max": 0.25,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Dara Casino",
+      "sites": [
+        "Dara Casino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.25,
+      "daily_max": 0.25,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "The Money Factory",
+      "sites": [
+        "The Money Factory"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "P8D Interactive Inc",
+      "sites": [
+        "Sheeshcasino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "SKEEVE Products Limited",
+      "sites": [
+        "GoodVibesCasino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "IGW Wild World LLC",
+      "sites": [
+        "Wild World Casino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Forever Winning LLC",
+      "sites": [
+        "Spinfinite"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "wheel"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 5.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Lucky Hands",
+      "sites": [
+        "Luckyhands"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "multi_step"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.1,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Fish Bear Studio Limited",
+      "sites": [
+        "SorceryReels"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.1,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "10 Ten Gaming LLC",
+      "sites": [
+        "Smiles Casino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.05,
+      "daily_max": 0.15,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Heuston Gaming",
+      "sites": [
+        "Cazino"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.1,
+      "daily_max": 0.1,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "The Roost LTD",
+      "sites": [
+        "Cluck"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "vip_locked"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.0,
+      "daily_max": 0.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Sweet Innovation LLC",
+      "sites": [
+        "Lucky Slots .us"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "medium"
+      ],
+      "daily_min": 0.0,
+      "daily_max": 0.0,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Lucky Me Ventures LLC",
+      "sites": [
+        "Lucky.me"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "streak"
+      ],
+      "tiers": [
+        "trash"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Nio Consolidated LLC",
+      "sites": [
+        "NioPlay"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "timed"
+      ],
+      "tiers": [
+        "trash"
+      ],
+      "daily_min": 0.3,
+      "daily_max": 1.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Vegas Coins Inc",
+      "sites": [
+        "VegasCoins"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "trash"
+      ],
+      "daily_min": 0.2,
+      "daily_max": 0.2,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "Prudent Owl Limited",
+      "sites": [
+        "Lavish Luck"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "trash"
+      ],
+      "daily_min": 0.3,
+      "daily_max": 0.3,
+      "adapters_saved": 0
+    },
+    {
+      "parent": "SWS Operations Inc",
+      "sites": [
+        "Vivaro.us"
+      ],
+      "count": 1,
+      "mechanisms": [
+        "click"
+      ],
+      "tiers": [
+        "trash"
+      ],
+      "daily_min": 1.0,
+      "daily_max": 50.0,
+      "adapters_saved": 0
+    }
+  ],
+  "mechanisms": {
+    "streak": {
+      "label": "Streak Calendar",
+      "description": "Consecutive-day login; bonus grows over 5-7 days",
+      "sites": [
+        "Crown Coins",
+        "LuckyLandSlots",
+        "GoldTreasureCasino",
+        "MyPrize",
+        "Chumba Casino",
+        "ScarletSands",
+        "Sweepshark",
+        "Modo",
+        "LunaLandCasino",
+        "NoLimitCoins",
+        "Chanced.com",
+        "AcornFun",
+        "Lucky.me"
+      ]
+    },
+    "click": {
+      "label": "Button Click",
+      "description": "Navigate to daily page, click claim button",
+      "sites": [
+        "McLuck",
+        "Legendz",
+        "Real Prize",
+        "Lonestar",
+        "LuckyLandCasino",
+        "Playfame",
+        "Luckparty",
+        "Hello Millions",
+        "Moozi",
+        "LuckyBitsVegas",
+        "Pulsz",
+        "Sportzino",
+        "Zula",
+        "YayCasino",
+        "SpinSaga",
+        "Rolla",
+        "Stake",
+        "SpinPals",
+        "Card Crush",
+        "Sidepot",
+        "SweepsRoyal",
+        "Shuffle.us",
+        "American Luck",
+        "Golden Hearts Games",
+        "MoonSpin",
+        "PeakPlay",
+        "High5Casino",
+        "Spree",
+        "GetZoot",
+        "LuckyStake",
+        "Ace.com",
+        "ChipNWin",
+        "FortuneWheelz",
+        "FunzCity",
+        "SpinQuest",
+        "Jackpota",
+        "SpinBlitz",
+        "MegaBonanza",
+        "Baba Casino",
+        "Dara Casino",
+        "JackpotRabbit",
+        "The Money Factory",
+        "Sheeshcasino",
+        "GoodVibesCasino",
+        "Wild World Casino",
+        "SorceryReels",
+        "Smiles Casino",
+        "Cazino",
+        "Lucky Slots .us",
+        "VegasCoins",
+        "Lavish Luck",
+        "JuicyPopSlots",
+        "LuckyStars",
+        "Vivaro.us",
+        "GummyPlay"
+      ]
+    },
+    "purchase_locked": {
+      "label": "Purchase-Locked",
+      "description": "Daily bonus requires an active coin package",
+      "sites": [
+        "WOW Vegas"
+      ]
+    },
+    "wheel": {
+      "label": "Spin Wheel",
+      "description": "Spin a wheel with variable SC outcome",
+      "sites": [
+        "PulszBingo",
+        "Casino.Click",
+        "Stackr",
+        "Sixty6",
+        "RubySweeps",
+        "RichSweeps",
+        "ToraTora",
+        "SpinDoo",
+        "SpeedSweeps",
+        "DimeSweeps",
+        "TaoFortune",
+        "FunRize",
+        "Spinfinite",
+        "GoldSlips"
+      ]
+    },
+    "multi_step": {
+      "label": "Multi-Step Nav",
+      "description": "Get Coins -> Daily Bonus, or sidebar navigation",
+      "sites": [
+        "Global Poker",
+        "SweepNext",
+        "ReBet",
+        "Fortune Coins",
+        "Clubs Poker",
+        "MegaFrenzy",
+        "Luckyhands"
+      ]
+    },
+    "timed": {
+      "label": "Timed Interval",
+      "description": "Multiple claims per day (every 2-6 hours)",
+      "sites": [
+        "Fliff",
+        "Jefebet",
+        "Rolling Riches",
+        "NioPlay"
+      ]
+    },
+    "vip_locked": {
+      "label": "VIP-Locked",
+      "description": "Daily bonus requires VIP tier",
+      "sites": [
+        "Cluck"
+      ]
+    }
+  },
+  "revenue": {
+    "active_sites": 95,
+    "daily_min": 30.9,
+    "daily_max": 230.7,
+    "daily_expected": 90.84,
+    "monthly_expected": 2725.2,
+    "by_tier": {
+      "god": {
+        "count": 28,
+        "daily_expected": 19.57
+      },
+      "high": {
+        "count": 17,
+        "daily_expected": 29.0
+      },
+      "medium": {
+        "count": 41,
+        "daily_expected": 20.19
+      },
+      "trash": {
+        "count": 9,
+        "daily_expected": 22.07
+      }
+    }
+  },
+  "health": {
+    "healthy": [
+      "Crown Coins",
+      "McLuck",
+      "Legendz",
+      "Real Prize",
+      "Lonestar",
+      "LuckyLandSlots",
+      "LuckyLandCasino",
+      "GoldTreasureCasino",
+      "Playfame",
+      "Luckparty",
+      "Hello Millions",
+      "MyPrize",
+      "Chumba Casino",
+      "Moozi",
+      "LuckyBitsVegas",
+      "Pulsz",
+      "PulszBingo",
+      "Sportzino",
+      "Zula",
+      "YayCasino",
+      "SpinSaga",
+      "Rolla",
+      "Stake",
+      "Casino.Click",
+      "Global Poker",
+      "Stackr",
+      "SpinPals",
+      "Card Crush",
+      "Sidepot",
+      "RubySweeps",
+      "RichSweeps",
+      "SweepsRoyal",
+      "Shuffle.us",
+      "American Luck",
+      "ScarletSands",
+      "Golden Hearts Games",
+      "SweepNext",
+      "ReBet",
+      "Fliff",
+      "ToraTora",
+      "SpinDoo",
+      "SpeedSweeps",
+      "Sweepshark",
+      "DimeSweeps",
+      "PeakPlay",
+      "Jefebet",
+      "Rolling Riches",
+      "Fortune Coins",
+      "Clubs Poker",
+      "High5Casino",
+      "Modo",
+      "Spree",
+      "LunaLandCasino",
+      "GetZoot",
+      "LuckyStake",
+      "Ace.com",
+      "NoLimitCoins",
+      "ChipNWin",
+      "FortuneWheelz",
+      "FunzCity",
+      "MegaFrenzy",
+      "TaoFortune",
+      "FunRize",
+      "Chanced.com",
+      "SpinQuest",
+      "Jackpota",
+      "SpinBlitz",
+      "MegaBonanza",
+      "AcornFun",
+      "Baba Casino",
+      "Dara Casino",
+      "JackpotRabbit",
+      "Sheeshcasino",
+      "GoodVibesCasino",
+      "Wild World Casino",
+      "Spinfinite",
+      "Luckyhands",
+      "SorceryReels",
+      "Smiles Casino",
+      "Cazino",
+      "GoldSlips",
+      "NioPlay",
+      "VegasCoins",
+      "Lavish Luck",
+      "JuicyPopSlots"
+    ],
+    "risky": [
+      {
+        "name": "WOW Vegas",
+        "reason": "Daily locked without a package purchase"
+      },
+      {
+        "name": "Sixty6",
+        "reason": "Redemption cancellation problems reported"
+      },
+      {
+        "name": "MoonSpin",
+        "reason": "Capped at $6; $19.99/40SC (200%); redemption problems"
+      },
+      {
+        "name": "The Money Factory",
+        "reason": "$8/32SC (400%), incremental; 1-2 month redemption delays"
+      },
+      {
+        "name": "Cluck",
+        "reason": "Unlocked by VIP level; 2 SC on signup"
+      },
+      {
+        "name": "Lucky Slots .us",
+        "reason": "Under review; 5 SC on signup"
+      },
+      {
+        "name": "Lucky.me",
+        "reason": "Lucky Streak; 2 SC on signup; redemption problems"
+      },
+      {
+        "name": "LuckyStars",
+        "reason": "3 SC on signup; stopped daily rewards"
+      },
+      {
+        "name": "Vivaro.us",
+        "reason": "$50/65SC (130%); unreliable"
+      },
+      {
+        "name": "GummyPlay",
+        "reason": "3 SC on signup; closed/unavailable"
+      }
+    ],
+    "dead": [
+      "Sportsmillions",
+      "Sweepslots",
+      "Vegas Gems",
+      "Carnival Citi",
+      "Jacks Club",
+      "Scrooge",
+      "Punt"
+    ]
+  },
+  "difficulties": [
+    {
+      "name": "Stackr",
+      "tier": "god",
+      "parent": "Stackr Social LLC",
+      "mechanism": "wheel",
+      "difficulty": 4.5,
+      "daily_min": 0.1,
+      "daily_max": 2.2
+    },
+    {
+      "name": "Fliff",
+      "tier": "high",
+      "parent": "Fliff",
+      "mechanism": "timed",
+      "difficulty": 4.5,
+      "daily_min": 1.0,
+      "daily_max": 2.2
+    },
+    {
+      "name": "Rolling Riches",
+      "tier": "medium",
+      "parent": "Rolling Riches",
+      "mechanism": "timed",
+      "difficulty": 4.5,
+      "daily_min": 0.8,
+      "daily_max": 1.4
+    },
+    {
+      "name": "Cluck",
+      "tier": "medium",
+      "parent": "The Roost LTD",
+      "mechanism": "vip_locked",
+      "difficulty": 4.5,
+      "daily_min": 0.0,
+      "daily_max": 0.0
+    },
+    {
+      "name": "GoldSlips",
+      "tier": "trash",
+      "parent": "Rubystone Ventures LLC",
+      "mechanism": "wheel",
+      "difficulty": 4.5,
+      "daily_min": 0.0,
+      "daily_max": 15.0
+    },
+    {
+      "name": "WOW Vegas",
+      "tier": "god",
+      "parent": "MW Services",
+      "mechanism": "purchase_locked",
+      "difficulty": 4.0,
+      "daily_min": 0.1,
+      "daily_max": 0.1
+    },
+    {
+      "name": "PulszBingo",
+      "tier": "god",
+      "parent": "Yellow Social",
+      "mechanism": "wheel",
+      "difficulty": 4.0,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Global Poker",
+      "tier": "god",
+      "parent": "VGW",
+      "mechanism": "multi_step",
+      "difficulty": 4.0,
+      "daily_min": 0.25,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Sixty6",
+      "tier": "high",
+      "parent": "Kinetix Ventures LLC",
+      "mechanism": "wheel",
+      "difficulty": 4.0,
+      "daily_min": 0.1,
+      "daily_max": 5.0
+    },
+    {
+      "name": "ToraTora",
+      "tier": "high",
+      "parent": "ToraTora Entertainment Inc",
+      "mechanism": "wheel",
+      "difficulty": 4.0,
+      "daily_min": 0.1,
+      "daily_max": 5.0
+    },
+    {
+      "name": "SpinDoo",
+      "tier": "high",
+      "parent": "PMSG Media Limited",
+      "mechanism": "wheel",
+      "difficulty": 4.0,
+      "daily_min": 0.1,
+      "daily_max": 2.0
+    },
+    {
+      "name": "DimeSweeps",
+      "tier": "medium",
+      "parent": "WW Funcrafters JWA LLC",
+      "mechanism": "wheel",
+      "difficulty": 4.0,
+      "daily_min": 0.1,
+      "daily_max": 20.0
+    },
+    {
+      "name": "Jefebet",
+      "tier": "medium",
+      "parent": "FSG Digital",
+      "mechanism": "timed",
+      "difficulty": 4.0,
+      "daily_min": 0.8,
+      "daily_max": 1.4
+    },
+    {
+      "name": "High5Casino",
+      "tier": "medium",
+      "parent": "High 5",
+      "mechanism": "click",
+      "difficulty": 4.0,
+      "daily_min": 0.5,
+      "daily_max": 0.5
+    },
+    {
+      "name": "LuckyLandSlots",
+      "tier": "god",
+      "parent": "VGW",
+      "mechanism": "streak",
+      "difficulty": 3.5,
+      "daily_min": 0.3,
+      "daily_max": 1.0
+    },
+    {
+      "name": "LuckyLandCasino",
+      "tier": "god",
+      "parent": "VGW",
+      "mechanism": "click",
+      "difficulty": 3.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Chumba Casino",
+      "tier": "god",
+      "parent": "VGW",
+      "mechanism": "streak",
+      "difficulty": 3.5,
+      "daily_min": 0.25,
+      "daily_max": 5.0
+    },
+    {
+      "name": "Casino.Click",
+      "tier": "god",
+      "parent": "Casino Click",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.0,
+      "daily_max": 5.0
+    },
+    {
+      "name": "RubySweeps",
+      "tier": "high",
+      "parent": "Rubystone Ventures LLC",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.1,
+      "daily_max": 1.0
+    },
+    {
+      "name": "RichSweeps",
+      "tier": "high",
+      "parent": "WW Funcrafters JWA LLC",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.1,
+      "daily_max": 20.0
+    },
+    {
+      "name": "SpeedSweeps",
+      "tier": "high",
+      "parent": "WW Funcrafters JWA LLC",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.1,
+      "daily_max": 20.0
+    },
+    {
+      "name": "TaoFortune",
+      "tier": "medium",
+      "parent": "A1",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.1,
+      "daily_max": 0.3
+    },
+    {
+      "name": "FunRize",
+      "tier": "medium",
+      "parent": "A1",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.1,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Spinfinite",
+      "tier": "medium",
+      "parent": "Forever Winning LLC",
+      "mechanism": "wheel",
+      "difficulty": 3.5,
+      "daily_min": 0.1,
+      "daily_max": 5.0
+    },
+    {
+      "name": "NioPlay",
+      "tier": "trash",
+      "parent": "Nio Consolidated LLC",
+      "mechanism": "timed",
+      "difficulty": 3.5,
+      "daily_min": 0.3,
+      "daily_max": 1.2
+    },
+    {
+      "name": "GoldTreasureCasino",
+      "tier": "god",
+      "parent": "Miracle Studio Inc",
+      "mechanism": "streak",
+      "difficulty": 3.0,
+      "daily_min": 0.5,
+      "daily_max": 1.5
+    },
+    {
+      "name": "LuckyBitsVegas",
+      "tier": "god",
+      "parent": "LBV Social LLC",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Sidepot",
+      "tier": "high",
+      "parent": "Fliff",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 1.0,
+      "daily_max": 6.0
+    },
+    {
+      "name": "Shuffle.us",
+      "tier": "high",
+      "parent": "Munyon Canyon",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 0.1,
+      "daily_max": 0.4
+    },
+    {
+      "name": "ScarletSands",
+      "tier": "high",
+      "parent": "UTech Solutions",
+      "mechanism": "streak",
+      "difficulty": 3.0,
+      "daily_min": 0.25,
+      "daily_max": 10.0
+    },
+    {
+      "name": "SweepNext",
+      "tier": "high",
+      "parent": "Boostora LTD",
+      "mechanism": "multi_step",
+      "difficulty": 3.0,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "ReBet",
+      "tier": "high",
+      "parent": "Rebet Inc",
+      "mechanism": "multi_step",
+      "difficulty": 3.0,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Sweepshark",
+      "tier": "medium",
+      "parent": "UTech Solutions",
+      "mechanism": "streak",
+      "difficulty": 3.0,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Fortune Coins",
+      "tier": "medium",
+      "parent": "Blazesoft",
+      "mechanism": "multi_step",
+      "difficulty": 3.0,
+      "daily_min": 0.75,
+      "daily_max": 0.75
+    },
+    {
+      "name": "Clubs Poker",
+      "tier": "medium",
+      "parent": "KHK Games Inc",
+      "mechanism": "multi_step",
+      "difficulty": 3.0,
+      "daily_min": 0.5,
+      "daily_max": 0.5
+    },
+    {
+      "name": "Modo",
+      "tier": "medium",
+      "parent": "ARB Gaming",
+      "mechanism": "streak",
+      "difficulty": 3.0,
+      "daily_min": 0.4,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Ace.com",
+      "tier": "medium",
+      "parent": "Full Stop Limited Inc",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 0.2,
+      "daily_max": 0.4
+    },
+    {
+      "name": "MegaFrenzy",
+      "tier": "medium",
+      "parent": "Heuston Gaming Inc",
+      "mechanism": "multi_step",
+      "difficulty": 3.0,
+      "daily_min": 0.1,
+      "daily_max": 0.4
+    },
+    {
+      "name": "Jackpota",
+      "tier": "medium",
+      "parent": "B2",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "MegaBonanza",
+      "tier": "medium",
+      "parent": "B2",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "AcornFun",
+      "tier": "medium",
+      "parent": "Jupiter Studio Limited",
+      "mechanism": "streak",
+      "difficulty": 3.0,
+      "daily_min": 0.2,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Baba Casino",
+      "tier": "medium",
+      "parent": "Baba Entertainment LTD",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 0.25,
+      "daily_max": 0.25
+    },
+    {
+      "name": "Luckyhands",
+      "tier": "medium",
+      "parent": "Lucky Hands",
+      "mechanism": "multi_step",
+      "difficulty": 3.0,
+      "daily_min": 0.1,
+      "daily_max": 0.1
+    },
+    {
+      "name": "Vivaro.us",
+      "tier": "trash",
+      "parent": "SWS Operations Inc",
+      "mechanism": "click",
+      "difficulty": 3.0,
+      "daily_min": 1.0,
+      "daily_max": 50.0
+    },
+    {
+      "name": "Crown Coins",
+      "tier": "god",
+      "parent": "Sunflower Limited",
+      "mechanism": "streak",
+      "difficulty": 2.5,
+      "daily_min": 0.05,
+      "daily_max": 1.5
+    },
+    {
+      "name": "McLuck",
+      "tier": "god",
+      "parent": "B2",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 2.0
+    },
+    {
+      "name": "Legendz",
+      "tier": "god",
+      "parent": "Platinum Panther LTD",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 1.5,
+      "daily_max": 1.5
+    },
+    {
+      "name": "Real Prize",
+      "tier": "god",
+      "parent": "RealPlay Tech Inc",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Playfame",
+      "tier": "god",
+      "parent": "B2",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Hello Millions",
+      "tier": "god",
+      "parent": "B2",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.4
+    },
+    {
+      "name": "MyPrize",
+      "tier": "god",
+      "parent": "My Technology Inc",
+      "mechanism": "streak",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 2.0
+    },
+    {
+      "name": "Stake",
+      "tier": "god",
+      "parent": "Sweepsteaks Limited",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "SweepsRoyal",
+      "tier": "high",
+      "parent": "WW Funcrafters JWA LLC",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "PeakPlay",
+      "tier": "medium",
+      "parent": "Rubystone Play LLC",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.1,
+      "daily_max": 0.5
+    },
+    {
+      "name": "Spree",
+      "tier": "medium",
+      "parent": "Play Spree",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.4,
+      "daily_max": 0.4
+    },
+    {
+      "name": "LunaLandCasino",
+      "tier": "medium",
+      "parent": "Parana Plays LLC",
+      "mechanism": "streak",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "LuckyStake",
+      "tier": "medium",
+      "parent": "ElevateTech Solutions Inc",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 2.0
+    },
+    {
+      "name": "NoLimitCoins",
+      "tier": "medium",
+      "parent": "A1",
+      "mechanism": "streak",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Chanced.com",
+      "tier": "medium",
+      "parent": "Gold Coin Group",
+      "mechanism": "streak",
+      "difficulty": 2.5,
+      "daily_min": 0.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "SpinBlitz",
+      "tier": "medium",
+      "parent": "B2",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Dara Casino",
+      "tier": "medium",
+      "parent": "Dara Casino",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.25,
+      "daily_max": 0.25
+    },
+    {
+      "name": "GoodVibesCasino",
+      "tier": "medium",
+      "parent": "SKEEVE Products Limited",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Lucky.me",
+      "tier": "trash",
+      "parent": "Lucky Me Ventures LLC",
+      "mechanism": "streak",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "VegasCoins",
+      "tier": "trash",
+      "parent": "Vegas Coins Inc",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Lavish Luck",
+      "tier": "trash",
+      "parent": "Prudent Owl Limited",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "JuicyPopSlots",
+      "tier": "trash",
+      "parent": "SWPMTECH LTD",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "GummyPlay",
+      "tier": "trash",
+      "parent": "SWPMTECH LTD",
+      "mechanism": "click",
+      "difficulty": 2.5,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Lonestar",
+      "tier": "god",
+      "parent": "RealPlay Tech Inc",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.3,
+      "daily_max": 1.3
+    },
+    {
+      "name": "Luckparty",
+      "tier": "god",
+      "parent": "Unknown",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Moozi",
+      "tier": "god",
+      "parent": "Moshy Gaming",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Pulsz",
+      "tier": "god",
+      "parent": "Yellow Social",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.3,
+      "daily_max": 0.3
+    },
+    {
+      "name": "Sportzino",
+      "tier": "god",
+      "parent": "Blazesoft",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 2.0
+    },
+    {
+      "name": "Zula",
+      "tier": "god",
+      "parent": "Blazesoft",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "YayCasino",
+      "tier": "god",
+      "parent": "Blazesoft",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "SpinSaga",
+      "tier": "god",
+      "parent": "SpinSaga Inc",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Rolla",
+      "tier": "god",
+      "parent": "MW Services",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "SpinPals",
+      "tier": "god",
+      "parent": "SpinPals LLC",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "Card Crush",
+      "tier": "high",
+      "parent": "Vision NL Limited",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.1,
+      "daily_max": 0.5
+    },
+    {
+      "name": "American Luck",
+      "tier": "high",
+      "parent": "Munyon Canyon",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.3,
+      "daily_max": 1.5
+    },
+    {
+      "name": "Golden Hearts Games",
+      "tier": "high",
+      "parent": "Golden Hearts",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 1.0
+    },
+    {
+      "name": "MoonSpin",
+      "tier": "high",
+      "parent": "Star Pulse Limited",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 6.0
+    },
+    {
+      "name": "GetZoot",
+      "tier": "medium",
+      "parent": "Enigma Lake Inc",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 0.5
+    },
+    {
+      "name": "ChipNWin",
+      "tier": "medium",
+      "parent": "Chipnwin LLC",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.1,
+      "daily_max": 0.5
+    },
+    {
+      "name": "FortuneWheelz",
+      "tier": "medium",
+      "parent": "A1",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.1,
+      "daily_max": 0.5
+    },
+    {
+      "name": "FunzCity",
+      "tier": "medium",
+      "parent": "A1",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.1,
+      "daily_max": 0.5
+    },
+    {
+      "name": "SpinQuest",
+      "tier": "medium",
+      "parent": "Social Gaming Room LLC",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 1.0,
+      "daily_max": 1.0
+    },
+    {
+      "name": "JackpotRabbit",
+      "tier": "medium",
+      "parent": "UTech Solutions",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "The Money Factory",
+      "tier": "medium",
+      "parent": "The Money Factory",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Sheeshcasino",
+      "tier": "medium",
+      "parent": "P8D Interactive Inc",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "Wild World Casino",
+      "tier": "medium",
+      "parent": "IGW Wild World LLC",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    },
+    {
+      "name": "SorceryReels",
+      "tier": "medium",
+      "parent": "Fish Bear Studio Limited",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.1,
+      "daily_max": 0.1
+    },
+    {
+      "name": "Smiles Casino",
+      "tier": "medium",
+      "parent": "10 Ten Gaming LLC",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.05,
+      "daily_max": 0.15
+    },
+    {
+      "name": "Cazino",
+      "tier": "medium",
+      "parent": "Heuston Gaming",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.1,
+      "daily_max": 0.1
+    },
+    {
+      "name": "Lucky Slots .us",
+      "tier": "medium",
+      "parent": "Sweet Innovation LLC",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.0,
+      "daily_max": 0.0
+    },
+    {
+      "name": "LuckyStars",
+      "tier": "trash",
+      "parent": "SWPMTECH LTD",
+      "mechanism": "click",
+      "difficulty": 2.0,
+      "daily_min": 0.2,
+      "daily_max": 0.2
+    }
+  ]
+}

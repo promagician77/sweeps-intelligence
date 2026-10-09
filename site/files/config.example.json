@@ -1,0 +1,126 @@
+{
+  "_note": "Everything that changes per site lives here, not in code. Adding a site means adding a block below and picking which adapter class it uses (by parent company). The bot reloads this on every cycle — no restart needed.",
+
+  "scheduler": {
+    "daily_window_start": "06:00",
+    "daily_window_end":   "23:00",
+    "timezone": "America/New_York",
+    "stagger_seconds": 45,
+    "_note_stagger": "Wait 45s between sites to look human. 80 sites × 45s = ~60 min for a full pass.",
+    "timed_interval_minutes": 120,
+    "_note_timed": "For sites like Fliff/Jefebet that allow claims every 2-6 hours.",
+    "retry_on_failure": 3,
+    "retry_backoff_minutes": [5, 15, 60]
+  },
+
+  "anti_detection": {
+    "fingerprint_rotation": true,
+    "_note_fp": "Each site gets its own persistent browser profile with a unique fingerprint (canvas, WebGL, navigator, audio, fonts). The fingerprint is stable per-site across runs (so the site sees the same 'device' each day) but unique per-site (so cross-site tracking can't link accounts).",
+    "human_delays": {
+      "click_min_ms": 200,
+      "click_max_ms": 800,
+      "type_min_ms": 50,
+      "type_max_ms": 150,
+      "page_load_wait_ms": 3000
+    },
+    "proxy": {
+      "provider": "${PROXY_PROVIDER}",
+      "api_key": "${PROXY_API_KEY}",
+      "type": "residential",
+      "sticky_session_minutes": 30,
+      "_note": "Residential proxies are non-negotiable. Datacenter IPs are flagged instantly by sweepstakes sites. One sticky session per site per run."
+    }
+  },
+
+  "credentials": {
+    "vault": "encrypted_file",
+    "vault_path": "./credentials.enc",
+    "encryption_key": "${VAULT_KEY}",
+    "_note": "Each site's email/password stored encrypted at rest. Decrypted only at runtime, only for the site being claimed. Never logged, never in plaintext on disk."
+  },
+
+  "monitoring": {
+    "dashboard_port": 8080,
+    "alerts": {
+      "on_ui_change": true,
+      "on_ban_detected": true,
+      "on_balance_threshold": true,
+      "balance_threshold_sc": 50,
+      "_note_threshold": "Alert when any site's balance hits its minimum redemption."
+    },
+    "channels": {
+      "telegram": {
+        "bot_token": "${TELEGRAM_BOT_TOKEN}",
+        "chat_id": "${TELEGRAM_CHAT_ID}"
+      },
+      "discord_webhook": "${DISCORD_WEBHOOK_URL}"
+    }
+  },
+
+  "sites": [
+    {
+      "name": "McLuck",
+      "url": "https://www.mcluck.com",
+      "adapter": "B2",
+      "enabled": true,
+      "daily_type": "click",
+      "credentials_key": "mcluck",
+      "selectors": {
+        "email_input": "#email",
+        "password_input": "#password",
+        "login_button": "button[type='submit']",
+        "daily_button": "[data-testid='daily-bonus']",
+        "claim_button": ".claim-btn",
+        "already_claimed": ".bonus-collected",
+        "amount_display": ".reward-amount",
+        "balance": ".sc-balance",
+        "logged_in_indicator": ".user-avatar"
+      },
+      "_note": "Selectors discovered by inspecting the live site. These are the first thing that changes when the site updates — the adapter detects the break and alerts."
+    },
+    {
+      "name": "Playfame",
+      "url": "https://www.playfame.com",
+      "adapter": "B2",
+      "enabled": true,
+      "daily_type": "click",
+      "credentials_key": "playfame",
+      "selectors": "_inherit_from:McLuck",
+      "_note": "Same B2 platform, same adapter, same selectors. Only the URL and credentials differ."
+    },
+    {
+      "name": "Chumba Casino",
+      "url": "https://www.chumbacasino.com",
+      "adapter": "VGW",
+      "enabled": true,
+      "daily_type": "streak",
+      "credentials_key": "chumba",
+      "selectors": {
+        "email_input": "#login-email",
+        "password_input": "#login-password",
+        "login_button": "#login-submit",
+        "daily_button": ".coin-store-btn",
+        "claim_button": ".daily-bonus-claim",
+        "streak_day_indicator": ".streak-day-number",
+        "amount_display": ".bonus-amount",
+        "balance": ".sc-balance-display",
+        "logged_in_indicator": ".user-menu"
+      },
+      "_note_streak": "VGW streak: bonus grows from $0.25 to $5 over 7 consecutive days. Missing a day resets to day 1. The adapter tracks which streak day we're on and flags a missed day."
+    },
+    {
+      "name": "Fliff",
+      "url": "https://www.fliff.com",
+      "adapter": "Fliff",
+      "enabled": true,
+      "daily_type": "timed",
+      "claim_interval_hours": 2,
+      "credentials_key": "fliff",
+      "selectors": {
+        "_note": "Fliff requires phone login — the adapter uses the mobile viewport and handles the phone-number OTP flow."
+      }
+    }
+  ],
+
+  "_architecture_note": "The adapter field maps to a Python class. All 6 B2 sites use B2Adapter. All 4 VGW sites use VGWAdapter. Each adapter knows the login flow, the daily bonus flow, and the balance check for its platform. When a site updates its UI, one selector fix in this config repairs all sites on that platform."
+}
