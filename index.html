@@ -1,0 +1,1586 @@
+<title>Sweeps Intelligence</title>
+<style>
+:root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --amber: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --god: #ffd700;
+    --high: #58a6ff;
+    --med: #8b949e;
+    --trash: #f85149;
+    --dead: #484f58;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+:root { color-scheme: dark; }
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+        --bg: #f6f8fa;
+        --surface: #ffffff;
+        --border: #d0d7de;
+        --text: #1f2328;
+        --text2: #656d76;
+        color-scheme: light;
+    }
+}
+:root[data-theme="light"] {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #656d76;
+    color-scheme: light;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--font);
+        line-height: 1.6; padding: 16px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.6rem; margin-bottom: 4px; }
+h2 { font-size: 1.25rem; margin: 32px 0 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border); color: var(--accent); }
+h3 { font-size: 1.05rem; margin: 16px 0 8px; }
+p, li { color: var(--text2); font-size: 0.9rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Metrics strip */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px; margin: 20px 0; }
+.metric { background: var(--surface); border: 1px solid var(--border);
+           border-radius: var(--radius); padding: 16px; text-align: center; }
+.metric .val { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+.metric .lbl { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
+.metric.highlight .val { color: var(--green); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem;
+         background: var(--surface); border-radius: var(--radius);
+         overflow: hidden; margin-bottom: 16px; }
+th { text-align: left; padding: 10px 12px; background: var(--bg);
+      color: var(--text2); font-weight: 600; font-size: 0.78rem;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border); cursor: pointer; }
+th:hover { color: var(--accent); }
+td { padding: 8px 12px; border-bottom: 1px solid var(--border);
+      vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+
+.fam-name { font-weight: 600; white-space: nowrap; }
+.fam-count { font-weight: 700; color: var(--accent); text-align: center; }
+.fam-saved { font-weight: 700; color: var(--green); text-align: center; }
+.fam-daily { white-space: nowrap; }
+.fam-sites { font-size: 0.8rem; color: var(--text2); }
+
+/* Tier badges */
+.tier-badge { padding: 2px 8px; border-radius: 12px; font-size: 0.72rem;
+               font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.tier-god   { background: rgba(255,215,0,0.15); color: var(--god); }
+.tier-high  { background: rgba(88,166,255,0.15); color: var(--high); }
+.tier-med   { background: rgba(139,148,158,0.15); color: var(--med); }
+.tier-trash { background: rgba(248,81,73,0.15); color: var(--trash); }
+.tier-dead  { background: rgba(72,79,88,0.15); color: var(--dead); }
+
+/* Mechanism cards */
+.mech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+              gap: 12px; margin: 12px 0; }
+.mech-card { background: var(--surface); border: 1px solid var(--border);
+              border-radius: var(--radius); padding: 16px; }
+.mech-icon { font-size: 1.6rem; margin-bottom: 4px; }
+.mech-name { font-weight: 700; font-size: 0.95rem; }
+.mech-count { color: var(--accent); font-size: 0.85rem; font-weight: 600; }
+.mech-desc { color: var(--text2); font-size: 0.8rem; margin: 8px 0; }
+.mech-impl { font-size: 0.78rem; color: var(--text2);
+              background: var(--bg); padding: 8px; border-radius: 4px; margin-top: 8px; }
+.mech-tag { display: inline-block; padding: 2px 6px; border-radius: 4px;
+             font-size: 0.75rem; background: var(--bg); margin: 1px 2px;
+             white-space: nowrap; }
+
+/* Difficulty bar */
+.diff-bar { width: 100%; height: 18px; background: var(--bg);
+             border-radius: 9px; position: relative; overflow: hidden;
+             min-width: 80px; }
+.diff-fill { height: 100%; border-radius: 9px; transition: width 0.3s; }
+.diff-easy { background: var(--green); }
+.diff-med  { background: var(--amber); }
+.diff-hard { background: var(--red); }
+.diff-bar span { position: absolute; right: 6px; top: 0; font-size: 0.72rem;
+                  font-weight: 700; line-height: 18px; color: var(--text); }
+
+.risk-reason { color: var(--amber); font-size: 0.82rem; }
+
+/* Architecture diagram */
+.arch-box { background: var(--surface); border: 1px solid var(--border);
+             border-radius: var(--radius); padding: 16px; margin: 12px 0;
+             overflow-x: auto; }
+.arch-svg { width: 100%; max-width: 900px; margin: 0 auto; display: block; }
+
+/* Code download */
+.code-section { background: var(--surface); border: 1px solid var(--border);
+                 border-radius: var(--radius); margin: 12px 0; }
+.code-header { display: flex; justify-content: space-between; align-items: center;
+                padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.code-header span { font-weight: 600; font-size: 0.85rem; font-family: var(--mono); }
+.code-header button { background: var(--accent); color: #fff; border: none;
+                       padding: 4px 12px; border-radius: 4px; cursor: pointer;
+                       font-size: 0.78rem; }
+pre { padding: 12px; overflow-x: auto; font-size: 0.78rem; line-height: 1.5;
+       font-family: var(--mono); max-height: 400px; overflow-y: auto; }
+
+/* Filter */
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.filter-btn { padding: 4px 12px; border-radius: 16px; border: 1px solid var(--border);
+               background: var(--surface); color: var(--text2); cursor: pointer;
+               font-size: 0.78rem; transition: all 0.15s; }
+.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.subtitle { color: var(--text2); font-size: 0.88rem; margin-bottom: 16px; }
+.note { background: var(--surface); border-left: 3px solid var(--accent);
+         padding: 10px 14px; margin: 12px 0; font-size: 0.82rem; color: var(--text2);
+         border-radius: 0 var(--radius) var(--radius) 0; }
+
+/* Responsive */
+@media (max-width: 640px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .mech-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.78rem; }
+    td, th { padding: 6px 8px; }
+    .hide-mobile { display: none; }
+}
+
+/* Search */
+.search-box { width: 100%; padding: 8px 12px; border-radius: var(--radius);
+               border: 1px solid var(--border); background: var(--surface);
+               color: var(--text); font-size: 0.85rem; margin-bottom: 12px; }
+.search-box::placeholder { color: var(--text2); }
+</style>
+
+
+<h1>Site Intelligence Report</h1>
+<p class="subtitle">Sweepstakes automation analysis — 95 active sites across 13 platform families.<br>
+Built from the Casino Masterlist spreadsheet (updated 2026-09-21).</p>
+
+<div class="metrics">
+    <div class="metric">
+        <div class="val">95</div>
+        <div class="lbl">Active Sites</div>
+    </div>
+    <div class="metric">
+        <div class="val">13</div>
+        <div class="lbl">Platform Families</div>
+    </div>
+    <div class="metric">
+        <div class="val">41</div>
+        <div class="lbl">Sites in Families</div>
+    </div>
+    <div class="metric highlight">
+        <div class="val">28</div>
+        <div class="lbl">Adapters Saved</div>
+    </div>
+    <div class="metric">
+        <div class="val">67</div>
+        <div class="lbl">Unique Adapters</div>
+    </div>
+    <div class="metric">
+        <div class="val">$91</div>
+        <div class="lbl">Est. Daily / $2725 mo</div>
+    </div>
+</div>
+
+<div class="note">
+    <strong>The key finding:</strong> 13 parent companies operate 41 of the 95 active sites.
+    Sites sharing a parent company share the same backend, the same SPA shell, and the same daily-bonus flow.
+    One adapter per family, not per URL — that's <strong>28 adapters nobody needs to build or maintain</strong>.
+</div>
+
+<!-- ============================================ PLATFORM FAMILIES -->
+<h2>&#128279; Platform Family Map</h2>
+<p>Sites sharing a parent company share an adapter. One selector fix repairs every site on that platform.</p>
+<table id="familyTable">
+<thead><tr>
+    <th onclick="sortTable('familyTable',0)">Parent Company</th>
+    <th onclick="sortTable('familyTable',1)">Sites</th>
+    <th>Site Names</th>
+    <th>Mechanisms</th>
+    <th onclick="sortTable('familyTable',4)">Daily Range</th>
+    <th onclick="sortTable('familyTable',5)">Saved</th>
+</tr></thead>
+<tbody><tr>
+            <td class="fam-name">B2</td>
+            <td class="fam-count">6</td>
+            <td class="fam-sites">McLuck, Playfame, Hello Millions, Jackpota, SpinBlitz, MegaBonanza</td>
+            <td><span class="mech-tag">&#9745; Click</span></td>
+            <td class="fam-daily">$1.60 – $3.60</td>
+            <td class="fam-saved">5</td>
+        </tr><tr>
+            <td class="fam-name">A1</td>
+            <td class="fam-count">5</td>
+            <td class="fam-sites">NoLimitCoins, FortuneWheelz, FunzCity, TaoFortune, FunRize</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#9734; Streak</span> <span class="mech-tag">&#9881; Wheel</span></td>
+            <td class="fam-daily">$0.60 – $1.90</td>
+            <td class="fam-saved">4</td>
+        </tr><tr>
+            <td class="fam-name">VGW</td>
+            <td class="fam-count">4</td>
+            <td class="fam-sites">LuckyLandSlots, LuckyLandCasino, Chumba Casino, Global Poker</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#8644; Multi-step</span> <span class="mech-tag">&#9734; Streak</span></td>
+            <td class="fam-daily">$1.00 – $7.20</td>
+            <td class="fam-saved">3</td>
+        </tr><tr>
+            <td class="fam-name">Blazesoft</td>
+            <td class="fam-count">4</td>
+            <td class="fam-sites">Sportzino, Zula, YayCasino, Fortune Coins</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#8644; Multi-step</span></td>
+            <td class="fam-daily">$3.75 – $4.75</td>
+            <td class="fam-saved">3</td>
+        </tr><tr>
+            <td class="fam-name">WW Funcrafters JWA LLC</td>
+            <td class="fam-count">4</td>
+            <td class="fam-sites">RichSweeps, SweepsRoyal, SpeedSweeps, DimeSweeps</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#9881; Wheel</span></td>
+            <td class="fam-daily">$0.50 – $60.20</td>
+            <td class="fam-saved">3</td>
+        </tr><tr>
+            <td class="fam-name">UTech Solutions</td>
+            <td class="fam-count">3</td>
+            <td class="fam-sites">ScarletSands, Sweepshark, JackpotRabbit</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#9734; Streak</span></td>
+            <td class="fam-daily">$0.65 – $10.40</td>
+            <td class="fam-saved">2</td>
+        </tr><tr>
+            <td class="fam-name">SWPMTECH LTD</td>
+            <td class="fam-count">3</td>
+            <td class="fam-sites">JuicyPopSlots, LuckyStars, GummyPlay</td>
+            <td><span class="mech-tag">&#9745; Click</span></td>
+            <td class="fam-daily">$0.60 – $0.60</td>
+            <td class="fam-saved">2</td>
+        </tr><tr>
+            <td class="fam-name">MW Services</td>
+            <td class="fam-count">2</td>
+            <td class="fam-sites">WOW Vegas, Rolla</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#128274; Purchase-locked</span></td>
+            <td class="fam-daily">$0.30 – $1.10</td>
+            <td class="fam-saved">1</td>
+        </tr><tr>
+            <td class="fam-name">RealPlay Tech Inc</td>
+            <td class="fam-count">2</td>
+            <td class="fam-sites">Real Prize, Lonestar</td>
+            <td><span class="mech-tag">&#9745; Click</span></td>
+            <td class="fam-daily">$0.60 – $1.60</td>
+            <td class="fam-saved">1</td>
+        </tr><tr>
+            <td class="fam-name">Yellow Social</td>
+            <td class="fam-count">2</td>
+            <td class="fam-sites">Pulsz, PulszBingo</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#9881; Wheel</span></td>
+            <td class="fam-daily">$0.50 – $1.30</td>
+            <td class="fam-saved">1</td>
+        </tr><tr>
+            <td class="fam-name">Fliff</td>
+            <td class="fam-count">2</td>
+            <td class="fam-sites">Sidepot, Fliff</td>
+            <td><span class="mech-tag">&#9745; Click</span> <span class="mech-tag">&#9200; Timed</span></td>
+            <td class="fam-daily">$2.00 – $8.20</td>
+            <td class="fam-saved">1</td>
+        </tr><tr>
+            <td class="fam-name">Rubystone Ventures LLC</td>
+            <td class="fam-count">2</td>
+            <td class="fam-sites">RubySweeps, GoldSlips</td>
+            <td><span class="mech-tag">&#9881; Wheel</span></td>
+            <td class="fam-daily">$0.10 – $16.00</td>
+            <td class="fam-saved">1</td>
+        </tr><tr>
+            <td class="fam-name">Munyon Canyon</td>
+            <td class="fam-count">2</td>
+            <td class="fam-sites">Shuffle.us, American Luck</td>
+            <td><span class="mech-tag">&#9745; Click</span></td>
+            <td class="fam-daily">$0.40 – $1.90</td>
+            <td class="fam-saved">1</td>
+        </tr></tbody>
+</table>
+
+<!-- ============================================ MECHANISM TAXONOMY -->
+<h2>&#9881; Bonus Mechanism Taxonomy</h2>
+<p>Every site's daily bonus falls into one of these claim patterns. The adapter's <code>claim_daily()</code> method handles the pattern, not the site.</p>
+<div class="mech-grid"><div class="mech-card">
+            <div class="mech-icon">&#9745;</div>
+            <div class="mech-name">Button Click</div>
+            <div class="mech-count">55 sites</div>
+            <div class="mech-desc">Navigate to daily page, click claim button</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Navigate to bonus URL → <code>page.click(claim_selector)</code> → read result
+            </div>
+        </div><div class="mech-card">
+            <div class="mech-icon">&#9881;</div>
+            <div class="mech-name">Spin Wheel</div>
+            <div class="mech-count">14 sites</div>
+            <div class="mech-desc">Spin a wheel with variable SC outcome</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Navigate → <code>page.click(spin_selector)</code> → wait for animation → parse outcome element
+            </div>
+        </div><div class="mech-card">
+            <div class="mech-icon">&#9734;</div>
+            <div class="mech-name">Streak Calendar</div>
+            <div class="mech-count">13 sites</div>
+            <div class="mech-desc">Consecutive-day login; bonus grows over 5-7 days</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Navigate → check streak day indicator → <code>page.click(claim_selector)</code> → track day count for reset detection
+            </div>
+        </div><div class="mech-card">
+            <div class="mech-icon">&#9200;</div>
+            <div class="mech-name">Timed Interval</div>
+            <div class="mech-count">4 sites</div>
+            <div class="mech-desc">Multiple claims per day (every 2-6 hours)</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Run every N hours → check cooldown timer → claim if ready → schedule next run from timer value
+            </div>
+        </div><div class="mech-card">
+            <div class="mech-icon">&#8644;</div>
+            <div class="mech-name">Multi-Step Nav</div>
+            <div class="mech-count">7 sites</div>
+            <div class="mech-desc">Get Coins -> Daily Bonus, or sidebar navigation</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Navigate to coin store → click daily tab → <code>page.click(claim_selector)</code> → close modal
+            </div>
+        </div><div class="mech-card">
+            <div class="mech-icon">&#128274;</div>
+            <div class="mech-name">Purchase-Locked</div>
+            <div class="mech-count">1 site</div>
+            <div class="mech-desc">Daily bonus requires an active coin package</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Check purchase status first → skip if no active package → claim if unlocked
+            </div>
+        </div><div class="mech-card">
+            <div class="mech-icon">&#9830;</div>
+            <div class="mech-name">VIP-Locked</div>
+            <div class="mech-count">1 site</div>
+            <div class="mech-desc">Daily bonus requires VIP tier</div>
+            <div class="mech-impl">
+                <strong>Adapter method:</strong>
+                Check VIP level badge → skip if below threshold → claim if eligible
+            </div>
+        </div></div>
+
+<!-- ============================================ ARCHITECTURE -->
+<h2>&#128736; Architecture Blueprint</h2>
+<div class="arch-box">
+<svg class="arch-svg" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="420" fill="none"/>
+
+  <!-- Scheduler -->
+  <rect x="20" y="20" width="160" height="60" rx="8" fill="#1a2233" stroke="#30363d"/>
+  <text x="100" y="45" text-anchor="middle" fill="#58a6ff" font-size="12" font-weight="700">SCHEDULER</text>
+  <text x="100" y="62" text-anchor="middle" fill="#8b949e" font-size="9">Cron + interval engine</text>
+
+  <!-- Orchestrator -->
+  <rect x="220" y="20" width="160" height="60" rx="8" fill="#1a2233" stroke="#58a6ff" stroke-width="2"/>
+  <text x="300" y="45" text-anchor="middle" fill="#58a6ff" font-size="12" font-weight="700">ORCHESTRATOR</text>
+  <text x="300" y="62" text-anchor="middle" fill="#8b949e" font-size="9">Picks adapter, runs claim</text>
+
+  <!-- Arrow: scheduler -> orchestrator -->
+  <line x1="180" y1="50" x2="218" y2="50" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Anti-detection -->
+  <rect x="420" y="20" width="160" height="60" rx="8" fill="#1a2233" stroke="#d29922"/>
+  <text x="500" y="45" text-anchor="middle" fill="#d29922" font-size="12" font-weight="700">ANTI-DETECTION</text>
+  <text x="500" y="62" text-anchor="middle" fill="#8b949e" font-size="9">Fingerprint + proxy per site</text>
+
+  <!-- Arrow: orchestrator -> anti-detection -->
+  <line x1="380" y1="50" x2="418" y2="50" stroke="#d29922" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+  <!-- Browser Pool -->
+  <rect x="620" y="20" width="160" height="60" rx="8" fill="#1a2233" stroke="#30363d"/>
+  <text x="700" y="45" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="700">BROWSER POOL</text>
+  <text x="700" y="62" text-anchor="middle" fill="#8b949e" font-size="9">Playwright contexts</text>
+
+  <!-- Arrow: anti-detect -> browser -->
+  <line x1="580" y1="50" x2="618" y2="50" stroke="#bc8cff" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Adapter layer -->
+  <rect x="60" y="120" width="780" height="170" rx="8" fill="#0d1117" stroke="#30363d" stroke-dasharray="5,5"/>
+  <text x="450" y="145" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="600">ADAPTER LAYER — one class per platform family</text>
+
+  <!-- Adapter boxes -->
+  <rect x="90" y="160" width="120" height="55" rx="6" fill="#1a2233" stroke="#3fb950"/>
+  <text x="150" y="182" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="600">B2Adapter</text>
+  <text x="150" y="200" text-anchor="middle" fill="#8b949e" font-size="8">6 sites</text>
+
+  <rect x="230" y="160" width="120" height="55" rx="6" fill="#1a2233" stroke="#3fb950"/>
+  <text x="290" y="182" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="600">VGWAdapter</text>
+  <text x="290" y="200" text-anchor="middle" fill="#8b949e" font-size="8">4 sites</text>
+
+  <rect x="370" y="160" width="120" height="55" rx="6" fill="#1a2233" stroke="#3fb950"/>
+  <text x="430" y="182" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="600">BlazesoftAdapter</text>
+  <text x="430" y="200" text-anchor="middle" fill="#8b949e" font-size="8">4 sites</text>
+
+  <rect x="510" y="160" width="120" height="55" rx="6" fill="#1a2233" stroke="#3fb950"/>
+  <text x="570" y="182" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="600">FuncraftersAdapter</text>
+  <text x="570" y="200" text-anchor="middle" fill="#8b949e" font-size="8">4 sites</text>
+
+  <rect x="650" y="160" width="120" height="55" rx="6" fill="#1a2233" stroke="#58a6ff"/>
+  <text x="710" y="182" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="600">+ 63 more</text>
+  <text x="710" y="200" text-anchor="middle" fill="#8b949e" font-size="8">1 per platform</text>
+
+  <!-- Site names under adapters -->
+  <text x="150" y="240" text-anchor="middle" fill="#8b949e" font-size="7">McLuck, Playfame, Hello Millions</text>
+  <text x="150" y="250" text-anchor="middle" fill="#8b949e" font-size="7">Jackpota, SpinBlitz, MegaBonanza</text>
+
+  <text x="290" y="240" text-anchor="middle" fill="#8b949e" font-size="7">Chumba, LuckyLandSlots</text>
+  <text x="290" y="250" text-anchor="middle" fill="#8b949e" font-size="7">LuckyLandCasino, Global Poker</text>
+
+  <text x="430" y="240" text-anchor="middle" fill="#8b949e" font-size="7">Sportzino, Zula</text>
+  <text x="430" y="250" text-anchor="middle" fill="#8b949e" font-size="7">YayCasino, Fortune Coins</text>
+
+  <text x="570" y="240" text-anchor="middle" fill="#8b949e" font-size="7">RichSweeps, SweepsRoyal</text>
+  <text x="570" y="250" text-anchor="middle" fill="#8b949e" font-size="7">SpeedSweeps, DimeSweeps</text>
+
+  <!-- Data layer -->
+  <rect x="60" y="310" width="250" height="55" rx="8" fill="#1a2233" stroke="#30363d"/>
+  <text x="185" y="335" text-anchor="middle" fill="#58a6ff" font-size="11" font-weight="600">CREDENTIAL VAULT</text>
+  <text x="185" y="352" text-anchor="middle" fill="#8b949e" font-size="9">Encrypted at rest, per-site injection</text>
+
+  <rect x="330" y="310" width="250" height="55" rx="8" fill="#1a2233" stroke="#30363d"/>
+  <text x="455" y="335" text-anchor="middle" fill="#58a6ff" font-size="11" font-weight="600">RESULTS DB</text>
+  <text x="455" y="352" text-anchor="middle" fill="#8b949e" font-size="9">Claims, balances, errors, streaks</text>
+
+  <rect x="600" y="310" width="250" height="55" rx="8" fill="#1a2233" stroke="#30363d"/>
+  <text x="725" y="335" text-anchor="middle" fill="#58a6ff" font-size="11" font-weight="600">DASHBOARD + ALERTS</text>
+  <text x="725" y="352" text-anchor="middle" fill="#8b949e" font-size="9">Telegram / Discord / Web UI</text>
+
+  <!-- Arrows down from orchestrator -->
+  <line x1="300" y1="80" x2="300" y2="118" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="185" y1="290" x2="185" y2="308" stroke="#30363d" stroke-width="1"/>
+  <line x1="455" y1="290" x2="455" y2="308" stroke="#30363d" stroke-width="1"/>
+  <line x1="725" y1="290" x2="725" y2="308" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Config box -->
+  <rect x="20" y="390" width="860" height="25" rx="4" fill="#1a2233" stroke="#30363d"/>
+  <text x="450" y="407" text-anchor="middle" fill="#8b949e" font-size="9">config.json — sites, selectors, credentials refs, schedule — everything outside the code, reloaded every cycle</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#58a6ff"/>
+    </marker>
+    <marker id="arrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d29922"/>
+    </marker>
+    <marker id="arrow3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#bc8cff"/>
+    </marker>
+  </defs>
+</svg>
+</div>
+
+<div class="note">
+    <strong>Why this shape:</strong> The orchestrator picks the adapter by <code>config.sites[n].adapter</code> — it never knows which site it's talking to.
+    Adding a new site on an existing platform means adding a config block (URL + selectors), not writing code.
+    A broken selector fix propagates to every site on that platform automatically.
+</div>
+
+<!-- ============================================ SITE HEALTH -->
+<h2>&#9888; Site Health Matrix</h2>
+<p>85 healthy, 10 at risk, 7 dead. At-risk sites have reported issues:</p>
+<table>
+<thead><tr><th>Site</th><th>Issue</th></tr></thead>
+<tbody><tr>
+            <td>WOW Vegas</td>
+            <td class="risk-reason">Daily locked without a package purchase</td>
+        </tr><tr>
+            <td>Sixty6</td>
+            <td class="risk-reason">Redemption cancellation problems reported</td>
+        </tr><tr>
+            <td>MoonSpin</td>
+            <td class="risk-reason">Capped at $6; $19.99/40SC (200%); redemption problems</td>
+        </tr><tr>
+            <td>The Money Factory</td>
+            <td class="risk-reason">$8/32SC (400%), incremental; 1-2 month redemption delays</td>
+        </tr><tr>
+            <td>Cluck</td>
+            <td class="risk-reason">Unlocked by VIP level; 2 SC on signup</td>
+        </tr><tr>
+            <td>Lucky Slots .us</td>
+            <td class="risk-reason">Under review; 5 SC on signup</td>
+        </tr><tr>
+            <td>Lucky.me</td>
+            <td class="risk-reason">Lucky Streak; 2 SC on signup; redemption problems</td>
+        </tr><tr>
+            <td>LuckyStars</td>
+            <td class="risk-reason">3 SC on signup; stopped daily rewards</td>
+        </tr><tr>
+            <td>Vivaro.us</td>
+            <td class="risk-reason">$50/65SC (130%); unreliable</td>
+        </tr><tr>
+            <td>GummyPlay</td>
+            <td class="risk-reason">3 SC on signup; closed/unavailable</td>
+        </tr></tbody>
+</table>
+<p style="margin-top:8px;"><strong>Dead / sunsetted:</strong> Sportsmillions, Sweepslots, Vegas Gems, Carnival Citi, Jacks Club, Scrooge, Punt</p>
+
+<!-- ============================================ REVENUE -->
+<h2>&#128176; Revenue Projection by Tier</h2>
+<table>
+<thead><tr><th>Tier</th><th>Sites</th><th>Daily (est.)</th><th>Monthly (est.)</th></tr></thead>
+<tbody><tr>
+            <td><span class="tier-badge tier-god">God</span></td>
+            <td>28</td>
+            <td>$19.57</td>
+            <td>$587.10</td>
+        </tr><tr>
+            <td><span class="tier-badge tier-high">High</span></td>
+            <td>17</td>
+            <td>$29.00</td>
+            <td>$870.00</td>
+        </tr><tr>
+            <td><span class="tier-badge tier-med">Medium</span></td>
+            <td>41</td>
+            <td>$20.19</td>
+            <td>$605.70</td>
+        </tr><tr>
+            <td><span class="tier-badge tier-trash">Trash</span></td>
+            <td>9</td>
+            <td>$22.07</td>
+            <td>$662.10</td>
+        </tr>
+<tr style="font-weight:700; border-top:2px solid var(--border)">
+    <td>Total</td><td>95</td>
+    <td>$90.84</td><td>$2725.20</td>
+</tr></tbody>
+</table>
+<div class="note">
+    Expected value = 70% × min + 30% × max. Wheel spins typically land near the floor.
+    The spreadsheet's own estimate ($1,407/mo) likely uses more conservative assumptions per-site.
+</div>
+
+<!-- ============================================ ALL SITES -->
+<h2>&#128200; Full Site Directory</h2>
+<input type="text" class="search-box" id="siteSearch" placeholder="Search sites..." oninput="filterSites()">
+<div class="filter-row">
+    <button class="filter-btn active" onclick="filterTier('all')">All (95)</button>
+    <button class="filter-btn" onclick="filterTier('god')">God (28)</button>
+    <button class="filter-btn" onclick="filterTier('high')">High (17)</button>
+    <button class="filter-btn" onclick="filterTier('medium')">Medium (41)</button>
+    <button class="filter-btn" onclick="filterTier('trash')">Trash (9)</button>
+</div>
+<table id="siteTable">
+<thead><tr>
+    <th onclick="sortTable('siteTable',0)">Site</th>
+    <th>Tier</th>
+    <th onclick="sortTable('siteTable',2)" class="hide-mobile">Parent Company</th>
+    <th>Mechanism</th>
+    <th onclick="sortTable('siteTable',4)">Daily</th>
+    <th onclick="sortTable('siteTable',5)">Min Redeem</th>
+    <th onclick="sortTable('siteTable',6)">Difficulty</th>
+</tr></thead>
+<tbody><tr class="tier-god">
+            <td>Crown Coins</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Sunflower Limited</td>
+            <td>&#9734; Streak</td>
+            <td>$0.05 – $1.50</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>McLuck</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>B2</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $2.00</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>WOW Vegas</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>MW Services</td>
+            <td>&#128274; Purchase-locked</td>
+            <td>$0.10 – $0.10</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Legendz</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Platinum Panther LTD</td>
+            <td>&#9745; Click</td>
+            <td>$1.50 – $1.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Real Prize</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>RealPlay Tech Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Lonestar</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>RealPlay Tech Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $1.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>LuckyLandSlots</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>VGW</td>
+            <td>&#9734; Streak</td>
+            <td>$0.30 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>LuckyLandCasino</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>VGW</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>GoldTreasureCasino</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Miracle Studio Inc</td>
+            <td>&#9734; Streak</td>
+            <td>$0.50 – $1.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Playfame</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>B2</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Luckparty</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Unknown</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Hello Millions</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>B2</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.40</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>MyPrize</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>My Technology Inc</td>
+            <td>&#9734; Streak</td>
+            <td>$0.20 – $2.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Chumba Casino</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>VGW</td>
+            <td>&#9734; Streak</td>
+            <td>$0.25 – $5.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Moozi</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Moshy Gaming</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>LuckyBitsVegas</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>LBV Social LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $1.00</td>
+            <td>$95</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Pulsz</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Yellow Social</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>PulszBingo</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Yellow Social</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.20 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Sportzino</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Blazesoft</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $2.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Zula</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Blazesoft</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>YayCasino</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Blazesoft</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>SpinSaga</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>SpinSaga Inc</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Rolla</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>MW Services</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Stake</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Sweepsteaks Limited</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Casino.Click</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Casino Click</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.00 – $5.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Global Poker</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>VGW</td>
+            <td>&#8644; Multi-step</td>
+            <td>$0.25 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-god">
+            <td>Stackr</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>Stackr Social LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $2.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:90%"></div><span>4.5</span></div></td>
+        </tr><tr class="tier-god">
+            <td>SpinPals</td>
+            <td><span class="tier-badge tier-god">GOD</span></td>
+            <td>SpinPals LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>Sixty6</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Kinetix Ventures LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $5.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>Card Crush</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Vision NL Limited</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.50</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>Sidepot</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Fliff</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $6.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>RubySweeps</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Rubystone Ventures LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-high">
+            <td>RichSweeps</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>WW Funcrafters JWA LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $20.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-high">
+            <td>SweepsRoyal</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>WW Funcrafters JWA LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-high">
+            <td>Shuffle.us</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Munyon Canyon</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.40</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>American Luck</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Munyon Canyon</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $1.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>ScarletSands</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>UTech Solutions</td>
+            <td>&#9734; Streak</td>
+            <td>$0.25 – $10.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>Golden Hearts Games</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Golden Hearts</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>SweepNext</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Boostora LTD</td>
+            <td>&#8644; Multi-step</td>
+            <td>$0.20 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>ReBet</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Rebet Inc</td>
+            <td>&#8644; Multi-step</td>
+            <td>$1.00 – $1.00</td>
+            <td>$20</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>Fliff</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Fliff</td>
+            <td>&#9200; Timed</td>
+            <td>$1.00 – $2.20</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:90%"></div><span>4.5</span></div></td>
+        </tr><tr class="tier-high">
+            <td>MoonSpin</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>Star Pulse Limited</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $6.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>ToraTora</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>ToraTora Entertainment Inc</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $5.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>SpinDoo</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>PMSG Media Limited</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $2.00</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-high">
+            <td>SpeedSweeps</td>
+            <td><span class="tier-badge tier-high">HIGH</span></td>
+            <td>WW Funcrafters JWA LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $20.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Sweepshark</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>UTech Solutions</td>
+            <td>&#9734; Streak</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>DimeSweeps</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>WW Funcrafters JWA LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $20.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>PeakPlay</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Rubystone Play LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Jefebet</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>FSG Digital</td>
+            <td>&#9200; Timed</td>
+            <td>$0.80 – $1.40</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Rolling Riches</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Rolling Riches</td>
+            <td>&#9200; Timed</td>
+            <td>$0.80 – $1.40</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:90%"></div><span>4.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Fortune Coins</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Blazesoft</td>
+            <td>&#8644; Multi-step</td>
+            <td>$0.75 – $0.75</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Clubs Poker</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>KHK Games Inc</td>
+            <td>&#8644; Multi-step</td>
+            <td>$0.50 – $0.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>High5Casino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>High 5</td>
+            <td>&#9745; Click</td>
+            <td>$0.50 – $0.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:80%"></div><span>4.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Modo</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>ARB Gaming</td>
+            <td>&#9734; Streak</td>
+            <td>$0.40 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Spree</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Play Spree</td>
+            <td>&#9745; Click</td>
+            <td>$0.40 – $0.40</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>LunaLandCasino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Parana Plays LLC</td>
+            <td>&#9734; Streak</td>
+            <td>$0.20 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>GetZoot</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Enigma Lake Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.50</td>
+            <td>$40</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>LuckyStake</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>ElevateTech Solutions Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $2.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Ace.com</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Full Stop Limited Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.40</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>NoLimitCoins</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>A1</td>
+            <td>&#9734; Streak</td>
+            <td>$0.20 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>ChipNWin</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Chipnwin LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>FortuneWheelz</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>A1</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>FunzCity</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>A1</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.50</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>MegaFrenzy</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Heuston Gaming Inc</td>
+            <td>&#8644; Multi-step</td>
+            <td>$0.10 – $0.40</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>TaoFortune</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>A1</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>FunRize</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>A1</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Chanced.com</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Gold Coin Group</td>
+            <td>&#9734; Streak</td>
+            <td>$0.00 – $1.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>SpinQuest</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Social Gaming Room LLC</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $1.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Jackpota</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>B2</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>SpinBlitz</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>B2</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>MegaBonanza</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>B2</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>AcornFun</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Jupiter Studio Limited</td>
+            <td>&#9734; Streak</td>
+            <td>$0.20 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Baba Casino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Baba Entertainment LTD</td>
+            <td>&#9745; Click</td>
+            <td>$0.25 – $0.25</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Dara Casino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Dara Casino</td>
+            <td>&#9745; Click</td>
+            <td>$0.25 – $0.25</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>JackpotRabbit</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>UTech Solutions</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>The Money Factory</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>The Money Factory</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Sheeshcasino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>P8D Interactive Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>GoodVibesCasino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>SKEEVE Products Limited</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Wild World Casino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>IGW Wild World LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Spinfinite</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Forever Winning LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.10 – $5.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Luckyhands</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Lucky Hands</td>
+            <td>&#8644; Multi-step</td>
+            <td>$0.10 – $0.10</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>SorceryReels</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Fish Bear Studio Limited</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.10</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Smiles Casino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>10 Ten Gaming LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.05 – $0.15</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Cazino</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Heuston Gaming</td>
+            <td>&#9745; Click</td>
+            <td>$0.10 – $0.10</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Cluck</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>The Roost LTD</td>
+            <td>&#9830; VIP-locked</td>
+            <td>$0.00 – $0.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:90%"></div><span>4.5</span></div></td>
+        </tr><tr class="tier-med">
+            <td>Lucky Slots .us</td>
+            <td><span class="tier-badge tier-med">MEDIUM</span></td>
+            <td>Sweet Innovation LLC</td>
+            <td>&#9745; Click</td>
+            <td>$0.00 – $0.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>Lucky.me</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>Lucky Me Ventures LLC</td>
+            <td>&#9734; Streak</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>GoldSlips</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>Rubystone Ventures LLC</td>
+            <td>&#9881; Wheel</td>
+            <td>$0.00 – $15.00</td>
+            <td>$50</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-hard" style="width:90%"></div><span>4.5</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>NioPlay</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>Nio Consolidated LLC</td>
+            <td>&#9200; Timed</td>
+            <td>$0.30 – $1.20</td>
+            <td>$75</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:70%"></div><span>3.5</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>VegasCoins</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>Vegas Coins Inc</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>Lavish Luck</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>Prudent Owl Limited</td>
+            <td>&#9745; Click</td>
+            <td>$0.30 – $0.30</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>JuicyPopSlots</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>SWPMTECH LTD</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>LuckyStars</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>SWPMTECH LTD</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:40%"></div><span>2.0</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>Vivaro.us</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>SWS Operations Inc</td>
+            <td>&#9745; Click</td>
+            <td>$1.00 – $50.00</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-med" style="width:60%"></div><span>3.0</span></div></td>
+        </tr><tr class="tier-trash">
+            <td>GummyPlay</td>
+            <td><span class="tier-badge tier-trash">TRASH</span></td>
+            <td>SWPMTECH LTD</td>
+            <td>&#9745; Click</td>
+            <td>$0.20 – $0.20</td>
+            <td>$100</td>
+            <td><div class="diff-bar"><div class="diff-fill diff-easy" style="width:50%"></div><span>2.5</span></div></td>
+        </tr></tbody>
+</table>
+
+<!-- ============================================ CODE -->
+<h2>&#128230; Downloadable Files</h2>
+<div class="code-section">
+    <div class="code-header">
+        <span>adapter_interface.py</span>
+        <button onclick="downloadFile('adapter_interface.py', adapterCode)">Download</button>
+    </div>
+    <pre id="adapterPre">"""
+Base adapter interface for sweepstakes site automation.
+Each platform family implements one adapter; sites sharing a parent company
+inherit the same adapter with only config differences (URL, branding CSS selectors).
+
+This is the contract every adapter fulfills. The orchestrator calls these
+methods and doesn't know which site it's talking to.
+"""
+
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from enum import Enum
+from typing import Optional
+import datetime
+
+
+class ClaimResult(Enum):
+    SUCCESS       = "success"        # bonus claimed
+    ALREADY_CLAIMED = "already_claimed"  # already collected today
+    WHEEL_SPUN    = "wheel_spun"     # wheel spin completed (amount in .value_sc)
+    STREAK_DAY    = "streak_day"     # streak day recorded (amount in .value_sc)
+    PURCHASE_REQUIRED = "purchase_req"  # daily locked behind a package
+    VIP_REQUIRED  = "vip_required"   # daily locked behind VIP level
+    SITE_DOWN     = "site_down"      # site unreachable or in maintenance
+    LOGIN_FAILED  = "login_failed"   # credentials rejected or 2FA required
+    CAPTCHA       = "captcha"        # CAPTCHA not solved
+    UI_CHANGED    = "ui_changed"     # expected element not found (adapter broken)
+    ERROR         = "error"          # unexpected error
+
+
+@dataclass
+class ClaimOutcome:
+    result:    ClaimResult
+    value_sc:  float = 0.0           # SC earned this claim
+    balance:   Optional[float] = None  # current SC balance if readable
+    message:   str = ""              # human-readable detail
+    screenshot: Optional[bytes] = None  # PNG for debugging / proof
+    timestamp: datetime.datetime = None
+
+    def __post_init__(self):
+        if self.timestamp is None:
+            self.timestamp = datetime.datetime.utcnow()
+
+
+class SiteAdapter(ABC):
+    """
+    One adapter per platform family.
+    Sites on the same platform (e.g., all B2 sites) share this class;
+    each site passes its own config (URL, selectors, credentials).
+    """
+
+    def __init__(self, site_config: dict, browser_context):
+        """
+        site_config: from config.json — has url, credentials ref, selectors
+        browser_context: Playwright BrowserContext with its own fingerprint
+        """
+        self.config = site_config
+        self.ctx = browser_context
+        self.page = None
+
+    @abstractmethod
+    async def login(self) -&gt; bool:
+        """
+        Log into the site. Returns True on success.
+        Should handle: cookie-based session restore, fresh login,
+        and detecting 2FA or CAPTCHA prompts.
+        """
+        ...
+
+    @abstractmethod
+    async def claim_daily(self) -&gt; ClaimOutcome:
+        """
+        Navigate to the daily bonus and claim it.
+        This is the core method. It should:
+        1. Navigate to the bonus page (URL or in-app navigation)
+        2. Detect if already claimed today
+        3. Click the claim button / spin the wheel / etc.
+        4. Read the result (SC earned)
+        5. Return a ClaimOutcome
+
+        The ...</pre>
+</div>
+<div class="code-section">
+    <div class="code-header">
+        <span>config.example.json</span>
+        <button onclick="downloadFile('config.example.json', configCode)">Download</button>
+    </div>
+    <pre id="configPre">{
+  "_note": "Everything that changes per site lives here, not in code. Adding a site means adding a block below and picking which adapter class it uses (by parent company). The bot reloads this on every cycle — no restart needed.",
+
+  "scheduler": {
+    "daily_window_start": "06:00",
+    "daily_window_end":   "23:00",
+    "timezone": "America/New_York",
+    "stagger_seconds": 45,
+    "_note_stagger": "Wait 45s between sites to look human. 80 sites × 45s = ~60 min for a full pass.",
+    "timed_interval_minutes": 120,
+    "_note_timed": "For sites like Fliff/Jefebet that allow claims every 2-6 hours.",
+    "retry_on_failure": 3,
+    "retry_backoff_minutes": [5, 15, 60]
+  },
+
+  "anti_detection": {
+    "fingerprint_rotation": true,
+    "_note_fp": "Each site gets its own persistent browser profile with a unique fingerprint (canvas, WebGL, navigator, audio, fonts). The fingerprint is stable per-site across runs (so the site sees the same 'device' each day) but unique per-site (so cross-site tracking can't link accounts).",
+    "human_delays": {
+      "click_min_ms": 200,
+      "click_max_ms": 800,
+      "type_min_ms": 50,
+      "type_max_ms": 150,
+      "page_load_wait_ms": 3000
+    },
+    "proxy": {
+      "provider": "${PROXY_PROVIDER}",
+      "api_key": "${PROXY_API_KEY}",
+      "type": "residential",
+      "sticky_session_minutes": 30,
+      "_note": "Residential proxies are non-negotiable. Datacenter IPs are flagged instantly by sweepstakes sites. One sticky session per site per run."
+    }
+  },
+
+  "credentials": {
+    "vault": "encrypted_file",
+    "vault_path": "./credentials.enc",
+    "encryption_key": "${VAULT_KEY}",
+    "_note": "Each site's email/password stored encrypted at rest. Decrypted only at runtime, only for the site being claimed. Never logged, never in plaintext on disk."
+  },
+
+  "monitoring": {
+    "dashboard_port": 8080,
+    "alerts": {
+      "on_ui_change": true,
+      "on_ban_detected": true,
+      "on_balance_threshold": true,
+      "balance_threshold_sc": 50,
+      "_note_threshold": "Alert when any site's balance hits its minimum redemption."
+    },
+    "channels": {
+      "telegram": {
+        "bot_token": "${TELEGRAM_BOT_TOKEN}",
+        "chat_id": "${TELEGRAM_CHAT_ID}"
+      },
+      "discord_webhook": "${DISCORD_WEBHOOK_URL}"
+    }
+  },
+
+  "sites": [
+    {
+      "name": "McLuck",
+      "url": "https://www.mcluck.com",
+      "adapter": "B2",
+      "enabled": true,
+      "daily_type": "click",
+      "credentials_key": "mcluck",
+   ...</pre>
+</div>
+
+<!-- ============================================ LIMITS -->
+<h2>&#9888; Limits of This Analysis</h2>
+<ul style="padding-left:20px; margin: 8px 0;">
+    <li><strong>Parent company grouping is from the spreadsheet, not from live site inspection.</strong>
+    Some "standalone" companies may share a white-label platform — the real adapter count could be lower.
+    The first week of development will discover these by comparing DOM structures.</li>
+    <li><strong>Difficulty scores are estimated</strong> from mechanism type and parent company reputation.
+    Actual anti-bot posture (Cloudflare Turnstile, DataDome, PerimeterX) needs live probing.</li>
+    <li><strong>Revenue assumes all bonuses are claimable.</strong> Some sites require a purchase first (WOW Vegas),
+    and some have reduced bonuses after initial period (LuckyBitsVegas, Rolla).</li>
+    <li><strong>The adapter interface is a contract, not production code.</strong> The B2Adapter example shows
+    the pattern; real selectors come from inspecting the live sites during development.</li>
+</ul>
+
+<p style="margin-top: 24px; color: var(--text2); font-size: 0.8rem;">
+    Analysis generated from spreadsheet data. No live site scraping was performed.
+    Parent companies, restricted states, and bonus amounts are as reported in the source document.<br>
+    — Sebastian
+</p>
+
+<script>
+const adapterCode = "\"\"\"\nBase adapter interface for sweepstakes site automation.\nEach platform family implements one adapter; sites sharing a parent company\ninherit the same adapter with only config differences (URL, branding CSS selectors).\n\nThis is the contract every adapter fulfills. The orchestrator calls these\nmethods and doesn't know which site it's talking to.\n\"\"\"\n\nfrom abc import ABC, abstractmethod\nfrom dataclasses import dataclass\nfrom enum import Enum\nfrom typing import Optional\nimport datetime\n\n\nclass ClaimResult(Enum):\n    SUCCESS       = \"success\"        # bonus claimed\n    ALREADY_CLAIMED = \"already_claimed\"  # already collected today\n    WHEEL_SPUN    = \"wheel_spun\"     # wheel spin completed (amount in .value_sc)\n    STREAK_DAY    = \"streak_day\"     # streak day recorded (amount in .value_sc)\n    PURCHASE_REQUIRED = \"purchase_req\"  # daily locked behind a package\n    VIP_REQUIRED  = \"vip_required\"   # daily locked behind VIP level\n    SITE_DOWN     = \"site_down\"      # site unreachable or in maintenance\n    LOGIN_FAILED  = \"login_failed\"   # credentials rejected or 2FA required\n    CAPTCHA       = \"captcha\"        # CAPTCHA not solved\n    UI_CHANGED    = \"ui_changed\"     # expected element not found (adapter broken)\n    ERROR         = \"error\"          # unexpected error\n\n\n@dataclass\nclass ClaimOutcome:\n    result:    ClaimResult\n    value_sc:  float = 0.0           # SC earned this claim\n    balance:   Optional[float] = None  # current SC balance if readable\n    message:   str = \"\"              # human-readable detail\n    screenshot: Optional[bytes] = None  # PNG for debugging / proof\n    timestamp: datetime.datetime = None\n\n    def __post_init__(self):\n        if self.timestamp is None:\n            self.timestamp = datetime.datetime.utcnow()\n\n\nclass SiteAdapter(ABC):\n    \"\"\"\n    One adapter per platform family.\n    Sites on the same platform (e.g., all B2 sites) share this class;\n    each site passes its own config (URL, selectors, credentials).\n    \"\"\"\n\n    def __init__(self, site_config: dict, browser_context):\n        \"\"\"\n        site_config: from config.json \u2014 has url, credentials ref, selectors\n        browser_context: Playwright BrowserContext with its own fingerprint\n        \"\"\"\n        self.config = site_config\n        self.ctx = browser_context\n        self.page = None\n\n    @abstractmethod\n    async def login(self) -> bool:\n        \"\"\"\n        Log into the site. Returns True on success.\n        Should handle: cookie-based session restore, fresh login,\n        and detecting 2FA or CAPTCHA prompts.\n        \"\"\"\n        ...\n\n    @abstractmethod\n    async def claim_daily(self) -> ClaimOutcome:\n        \"\"\"\n        Navigate to the daily bonus and claim it.\n        This is the core method. It should:\n        1. Navigate to the bonus page (URL or in-app navigation)\n        2. Detect if already claimed today\n        3. Click the claim button / spin the wheel / etc.\n        4. Read the result (SC earned)\n        5. Return a ClaimOutcome\n\n        The orchestrator calls this once per day per site (or per interval\n        for timed sites like Fliff/Jefebet).\n        \"\"\"\n        ...\n\n    @abstractmethod\n    async def check_balance(self) -> Optional[float]:\n        \"\"\"Read current SC balance. Returns None if not readable.\"\"\"\n        ...\n\n    async def is_healthy(self) -> bool:\n        \"\"\"\n        Quick health check: can we reach the site and see the expected page?\n        Used by the orchestrator to detect site outages or UI changes\n        without doing a full claim cycle.\n        \"\"\"\n        try:\n            page = await self.ctx.new_page()\n            resp = await page.goto(self.config[\"url\"], timeout=15000)\n            ok = resp and resp.status == 200\n            await page.close()\n            return ok\n        except Exception:\n            return False\n\n    async def cleanup(self):\n        \"\"\"Close pages and release resources.\"\"\"\n        if self.page:\n            await self.page.close()\n\n\n# ---------------------------------------------------------------------------\n# Example: B2 family adapter (McLuck, Playfame, Hello Millions, Jackpota,\n#          SpinBlitz, MegaBonanza \u2014 6 sites, 1 adapter)\n# ---------------------------------------------------------------------------\n\nclass B2Adapter(SiteAdapter):\n    \"\"\"\n    B2 Entertainment platform. All 6 B2 sites share the same SPA shell,\n    the same bonus modal, and the same API endpoints. The only differences\n    are the domain and the CSS theme.\n    \"\"\"\n\n    async def login(self) -> bool:\n        self.page = await self.ctx.new_page()\n        # Try session restore first (cookies from previous run)\n        await self.page.goto(self.config[\"url\"])\n        if await self._is_logged_in():\n            return True\n        # Fresh login\n        await self.page.goto(f'{self.config[\"url\"]}/login')\n        await self.page.fill(self.config[\"selectors\"][\"email_input\"],\n                             self.config[\"credentials\"][\"email\"])\n        await self.page.fill(self.config[\"selectors\"][\"password_input\"],\n                             self.config[\"credentials\"][\"password\"])\n        await self.page.click(self.config[\"selectors\"][\"login_button\"])\n        await self.page.wait_for_load_state(\"networkidle\", timeout=10000)\n        return await self._is_logged_in()\n\n    async def claim_daily(self) -> ClaimOutcome:\n        if not self.page:\n            if not await self.login():\n                return ClaimOutcome(ClaimResult.LOGIN_FAILED)\n        try:\n            # B2 sites expose daily bonus via a modal triggered by a nav icon\n            daily_btn = self.config[\"selectors\"].get(\"daily_button\",\n                            '[data-testid=\"daily-bonus\"], .daily-reward-btn')\n            await self.page.click(daily_btn, timeout=5000)\n            await self.page.wait_for_timeout(1500)  # animation\n\n            # Check if already claimed\n            claimed_el = await self.page.query_selector(\n                self.config[\"selectors\"].get(\"already_claimed\",\n                    '.already-claimed, .bonus-collected'))\n            if claimed_el:\n                return ClaimOutcome(ClaimResult.ALREADY_CLAIMED,\n                                   message=\"Daily already collected\")\n\n            # Click claim\n            claim_btn = self.config[\"selectors\"].get(\"claim_button\",\n                            '.claim-btn, [data-action=\"claim\"]')\n            await self.page.click(claim_btn, timeout=5000)\n            await self.page.wait_for_timeout(2000)\n\n            # Read amount\n            amount_el = await self.page.query_selector(\n                self.config[\"selectors\"].get(\"amount_display\",\n                    '.reward-amount, .sc-earned'))\n            amount_text = await amount_el.inner_text() if amount_el else \"0\"\n            value = self._parse_sc(amount_text)\n\n            balance = await self.check_balance()\n            return ClaimOutcome(ClaimResult.SUCCESS, value_sc=value,\n                                balance=balance,\n                                message=f\"Claimed {value} SC\")\n        except Exception as e:\n            return ClaimOutcome(ClaimResult.UI_CHANGED,\n                                message=f\"Selector miss: {e}\")\n\n    async def check_balance(self) -> Optional[float]:\n        try:\n            bal_el = await self.page.query_selector(\n                self.config[\"selectors\"].get(\"balance\",\n                    '.sc-balance, [data-testid=\"balance\"]'))\n            if bal_el:\n                text = await bal_el.inner_text()\n                return self._parse_sc(text)\n        except Exception:\n            pass\n        return None\n\n    async def _is_logged_in(self) -> bool:\n        return bool(await self.page.query_selector(\n            self.config[\"selectors\"].get(\"logged_in_indicator\",\n                '.user-avatar, [data-testid=\"profile\"]')))\n\n    @staticmethod\n    def _parse_sc(text: str) -> float:\n        import re\n        m = re.search(r'[\\d.]+', text.replace(',', ''))\n        return float(m.group()) if m else 0.0\n";
+const configCode = "{\n  \"_note\": \"Everything that changes per site lives here, not in code. Adding a site means adding a block below and picking which adapter class it uses (by parent company). The bot reloads this on every cycle \u2014 no restart needed.\",\n\n  \"scheduler\": {\n    \"daily_window_start\": \"06:00\",\n    \"daily_window_end\":   \"23:00\",\n    \"timezone\": \"America/New_York\",\n    \"stagger_seconds\": 45,\n    \"_note_stagger\": \"Wait 45s between sites to look human. 80 sites \u00d7 45s = ~60 min for a full pass.\",\n    \"timed_interval_minutes\": 120,\n    \"_note_timed\": \"For sites like Fliff/Jefebet that allow claims every 2-6 hours.\",\n    \"retry_on_failure\": 3,\n    \"retry_backoff_minutes\": [5, 15, 60]\n  },\n\n  \"anti_detection\": {\n    \"fingerprint_rotation\": true,\n    \"_note_fp\": \"Each site gets its own persistent browser profile with a unique fingerprint (canvas, WebGL, navigator, audio, fonts). The fingerprint is stable per-site across runs (so the site sees the same 'device' each day) but unique per-site (so cross-site tracking can't link accounts).\",\n    \"human_delays\": {\n      \"click_min_ms\": 200,\n      \"click_max_ms\": 800,\n      \"type_min_ms\": 50,\n      \"type_max_ms\": 150,\n      \"page_load_wait_ms\": 3000\n    },\n    \"proxy\": {\n      \"provider\": \"${PROXY_PROVIDER}\",\n      \"api_key\": \"${PROXY_API_KEY}\",\n      \"type\": \"residential\",\n      \"sticky_session_minutes\": 30,\n      \"_note\": \"Residential proxies are non-negotiable. Datacenter IPs are flagged instantly by sweepstakes sites. One sticky session per site per run.\"\n    }\n  },\n\n  \"credentials\": {\n    \"vault\": \"encrypted_file\",\n    \"vault_path\": \"./credentials.enc\",\n    \"encryption_key\": \"${VAULT_KEY}\",\n    \"_note\": \"Each site's email/password stored encrypted at rest. Decrypted only at runtime, only for the site being claimed. Never logged, never in plaintext on disk.\"\n  },\n\n  \"monitoring\": {\n    \"dashboard_port\": 8080,\n    \"alerts\": {\n      \"on_ui_change\": true,\n      \"on_ban_detected\": true,\n      \"on_balance_threshold\": true,\n      \"balance_threshold_sc\": 50,\n      \"_note_threshold\": \"Alert when any site's balance hits its minimum redemption.\"\n    },\n    \"channels\": {\n      \"telegram\": {\n        \"bot_token\": \"${TELEGRAM_BOT_TOKEN}\",\n        \"chat_id\": \"${TELEGRAM_CHAT_ID}\"\n      },\n      \"discord_webhook\": \"${DISCORD_WEBHOOK_URL}\"\n    }\n  },\n\n  \"sites\": [\n    {\n      \"name\": \"McLuck\",\n      \"url\": \"https://www.mcluck.com\",\n      \"adapter\": \"B2\",\n      \"enabled\": true,\n      \"daily_type\": \"click\",\n      \"credentials_key\": \"mcluck\",\n      \"selectors\": {\n        \"email_input\": \"#email\",\n        \"password_input\": \"#password\",\n        \"login_button\": \"button[type='submit']\",\n        \"daily_button\": \"[data-testid='daily-bonus']\",\n        \"claim_button\": \".claim-btn\",\n        \"already_claimed\": \".bonus-collected\",\n        \"amount_display\": \".reward-amount\",\n        \"balance\": \".sc-balance\",\n        \"logged_in_indicator\": \".user-avatar\"\n      },\n      \"_note\": \"Selectors discovered by inspecting the live site. These are the first thing that changes when the site updates \u2014 the adapter detects the break and alerts.\"\n    },\n    {\n      \"name\": \"Playfame\",\n      \"url\": \"https://www.playfame.com\",\n      \"adapter\": \"B2\",\n      \"enabled\": true,\n      \"daily_type\": \"click\",\n      \"credentials_key\": \"playfame\",\n      \"selectors\": \"_inherit_from:McLuck\",\n      \"_note\": \"Same B2 platform, same adapter, same selectors. Only the URL and credentials differ.\"\n    },\n    {\n      \"name\": \"Chumba Casino\",\n      \"url\": \"https://www.chumbacasino.com\",\n      \"adapter\": \"VGW\",\n      \"enabled\": true,\n      \"daily_type\": \"streak\",\n      \"credentials_key\": \"chumba\",\n      \"selectors\": {\n        \"email_input\": \"#login-email\",\n        \"password_input\": \"#login-password\",\n        \"login_button\": \"#login-submit\",\n        \"daily_button\": \".coin-store-btn\",\n        \"claim_button\": \".daily-bonus-claim\",\n        \"streak_day_indicator\": \".streak-day-number\",\n        \"amount_display\": \".bonus-amount\",\n        \"balance\": \".sc-balance-display\",\n        \"logged_in_indicator\": \".user-menu\"\n      },\n      \"_note_streak\": \"VGW streak: bonus grows from $0.25 to $5 over 7 consecutive days. Missing a day resets to day 1. The adapter tracks which streak day we're on and flags a missed day.\"\n    },\n    {\n      \"name\": \"Fliff\",\n      \"url\": \"https://www.fliff.com\",\n      \"adapter\": \"Fliff\",\n      \"enabled\": true,\n      \"daily_type\": \"timed\",\n      \"claim_interval_hours\": 2,\n      \"credentials_key\": \"fliff\",\n      \"selectors\": {\n        \"_note\": \"Fliff requires phone login \u2014 the adapter uses the mobile viewport and handles the phone-number OTP flow.\"\n      }\n    }\n  ],\n\n  \"_architecture_note\": \"The adapter field maps to a Python class. All 6 B2 sites use B2Adapter. All 4 VGW sites use VGWAdapter. Each adapter knows the login flow, the daily bonus flow, and the balance check for its platform. When a site updates its UI, one selector fix in this config repairs all sites on that platform.\"\n}\n";
+
+function downloadFile(name, content) {
+    const blob = new Blob([content], {type: 'text/plain'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+}
+
+let currentTier = 'all';
+function filterTier(tier) {
+    currentTier = tier;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    filterSites();
+}
+
+function filterSites() {
+    const query = document.getElementById('siteSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('#siteTable tbody tr');
+    rows.forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const parent = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+        const matchesSearch = name.includes(query) || parent.includes(query);
+        const tierClass = row.className;
+        const matchesTier = currentTier === 'all' || tierClass.includes('tier-' + currentTier);
+        row.style.display = matchesSearch && matchesTier ? '' : 'none';
+    });
+}
+
+function sortTable(tableId, col) {
+    const table = document.getElementById(tableId);
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const dir = table.dataset.sortDir === 'asc' ? 'desc' : 'asc';
+    table.dataset.sortDir = dir;
+    rows.sort((a, b) => {
+        let va = a.cells[col]?.textContent.trim() || '';
+        let vb = b.cells[col]?.textContent.trim() || '';
+        const na = parseFloat(va.replace(/[^0-9.-]/g, ''));
+        const nb = parseFloat(vb.replace(/[^0-9.-]/g, ''));
+        if (!isNaN(na) && !isNaN(nb)) {
+            return dir === 'asc' ? na - nb : nb - na;
+        }
+        return dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+    rows.forEach(r => tbody.appendChild(r));
+}
+</script>
